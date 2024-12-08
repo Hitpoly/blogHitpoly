@@ -1,0 +1,55 @@
+{
+  "marketing": [
+    {
+      "id": "1",
+      "image": "/images/customerJourney.jpg",
+      "title": "¿Cómo definir a tu cliente ideal para cada etapa del buyer journey? (Incluye plantilla gratuita)",
+      "subtitle": "Descubre cómo identificar a tu buyer persona y optimizar tus estrategias de ventas con nuestra plantilla descargable.",
+      "creator": "Luis Pérez",
+      "date": "6 de Diciembre, 2024",
+      "linkCategoria": "/postVentas1",
+      "linkText": "MARKETING",
+      "linkArticle": "/post/cliente-ideal-buyer-journey"
+    }
+  ],
+  "ventas": [
+    {
+      "id": "3",
+      "image": "/images/crecimientoComercial.jpg",
+      "title": "Las 5 estrategias de ventas más efectivas para 2024",
+      "subtitle": "Aprende cómo implementar estrategias de ventas comprobadas que aumenten tus conversiones y fidelicen a tus clientes.",
+      "creator": "María López",
+      "date": "8 de Diciembre, 2024",
+      "linkCategoria": "/estrategias-ventas",
+      "linkText": "VENTAS",
+      "linkArticle": "/post/estrategias-ventas-efectivas-2024"
+    }
+  ],
+
+  "servicio_al_cliente": [
+    {
+      "id": "3",
+      "image": "https://via.placeholder.com/200",
+      "title": "Tendencias clave en atención al cliente para 2025: Cómo ofrecer una experiencia excepcional",
+      "subtitle": "Descubre las mejores prácticas globales para mejorar la atención al cliente y fidelizar usuarios.",
+      "creator": "Marta Sánchez",
+      "date": "7 de Diciembre, 2024",
+      "linkCategoria": "/postServicioCliente1",
+      "linkText": "TECNOLOGIA",
+      "linkArticle": "/post/aumentar-ventas-y-fidelizar-clientes-2025"
+    }
+  ],
+  "tecnologia": [
+    {
+      "id": "4",
+      "image": "/images/plantillasWeb.jpg",
+      "title": "Plantillas website gratuitas (Fáciles de usar) en React.js, Html, Css, JScript, Bootstrap... ",
+      "subtitle": "Estrategias clave para maximizar el alcance y la rentabilidad de emprendedores y pequeñas empresas en un mercado digital altamente competitivo.",
+      "creator": "Carlos Rodríguez",
+      "date": "5 de Diciembre, 2024",
+      "linkCategoria": "/postPrincipal",
+      "linkText": "TECNOLOGÍA",
+      "linkArticle": "/post/estrategias-de-crecimiento-digital-2025"
+    }
+  ]
+}

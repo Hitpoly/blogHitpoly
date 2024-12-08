@@ -1,0 +1,51 @@
+[
+    {
+      "image": "/images/marketingDigital.jpg",
+      "title": "Cómo mejorar tu estrategia de marketing digital",
+      "linkArticle": "/articulo/1",
+      "linkText": "Marketing Digital",
+      "duration": "3:45",
+      "date": "12/08/2024"
+    },
+    {
+      "image": "/images/seo2025.jpg",
+      "title": "La importancia del SEO en 2025",
+      "linkArticle": "/articulo/2",
+      "linkText": "SEO",
+      "duration": "5:20",
+      "date": "11/08/2024"
+    },
+    {
+      "image": "/images/tendencias2025.jpg",
+      "title": "Tendencias de marketing para el próximo año",
+      "linkArticle": "/articulo/3",
+      "linkText": "Tendencias",
+      "duration": "4:00",
+      "date": "10/08/2024"
+    },
+    {
+      "image": "/images/googleAds.jpg",
+      "title": "Cómo optimizar tus campañas de Google Ads",
+      "linkArticle": "/articulo/4",
+      "linkText": "Google Ads",
+      "duration": "2:50",
+      "date": "09/08/2024"
+    },
+    {
+      "image": "/images/mktDeContenidos.jpg",
+      "title": "Marketing de contenidos: Estrategias efectivas",
+      "linkArticle": "/articulo/5",
+      "linkText": "Contenido",
+      "duration": "6:10",
+      "date": "08/08/2024"
+    },
+    {
+      "image": "/images/redesSociales.jpg",
+      "title": "El impacto de las redes sociales en las marcas",
+      "linkArticle": "/articulo/6",
+      "linkText": "Redes Sociales",
+      "duration": "4:30",
+      "date": "07/08/2024"
+    }
+  ]
+  

@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "title": "¿Qué está revolucionando el marketing digital ahora mismo?",
+    "date": "12 DE SEPTIEMBRE DE 2024",
+    "description": "Descubre los cambios que están transformando todo.",
+    "image": "/images/mktCrecimientoDigital.jpg",
+    "linkArticle": "/que-esta-revolucionando-el-marketing-digital"
+  },
+  {
+    "id": 2,
+    "title": "Influencers: El arma secreta que pocos aprovechan",
+    "date": "5 DE AGOSTO DE 2024",
+    "description": "Haz que tus campañas brillen con estas estrategias.",
+    "image": "/images/mrkInfluencers.jpg",
+    "linkArticle": "/influencers-el-arma-secreta"
+  },
+  {
+    "id": 3,
+    "title": "Contenido viral: El truco detrás del éxito",
+    "date": "18 DE JUNIO DE 2024",
+    "description": "Todo lo que necesitas saber para atraer millones de vistas.",
+    "image": "/images/marketingViral.jpg",
+    "linkArticle": "/contenido-viral-el-truco-detras-del-exito"
+  },
+  {
+    "id": 4,
+    "title": "Redes sociales: ¿Estás listo para el próximo nivel?",
+    "date": "22 DE JULIO DE 2024",
+    "description": "Aprende lo esencial para dominar la interacción.",
+    "image": "/images/socialMedia.jpg",
+    "linkArticle": "/redes-sociales-estas-listo-para-el-proximo-nivel"
+  }
+]

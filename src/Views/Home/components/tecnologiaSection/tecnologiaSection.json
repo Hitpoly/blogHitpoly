@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "title": "Optimización de sistemas Digitales con IA en 2025",
+    "date": "12 DE SEPTIEMBRE DE 2024",
+    "description": "Mejora la eficiencia con IA en procesos empresariales.",
+    "image": "/images/automatizacionIa.jpg",
+    "linkArticle": "/optimizar-procesos-ia-2025"
+  },
+  {
+    "id": 2,
+    "title": "Tendencias en Desarrollo de Software",
+    "date": "5 DE AGOSTO DE 2024",
+    "description": "Las tecnologías emergentes que cambiarán el software.",
+    "image": "/images/tendenciasEnSoftware.jpg",
+    "linkArticle": "/tendencias-desarrollo-software-2025"
+  },
+  {
+    "id": 3,
+    "title": "El Impacto global del 5G en Tecnologías modernas",
+    "date": "18 DE JUNIO DE 2024",
+    "description": "El 5G transforma IoT y aplicaciones tecnológicas.",
+    "image": "/images/cincoG.jpg",
+    "linkArticle": "/impacto-5g-tecnologia"
+  },
+  {
+    "id": 4,
+    "title": "Automatización para Empresas Digitales",
+    "date": "22 DE JULIO DE 2024",
+    "description": "Impulsa el crecimiento empresarial con automatización.",
+    "image": "/images/automatizacionDeProcesos.jpg",
+    "linkArticle": "/automatizacion-empresas-digitales"
+  }
+]

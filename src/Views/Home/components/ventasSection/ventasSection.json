@@ -1,0 +1,35 @@
+[
+    {
+      "id": 1,
+      "title": "¿Cómo optimizar tu embudo de ventas?",
+      "date": "12 DE SEPTIEMBRE DE 2024",
+      "description": "Descubre cómo mejorar tu embudo de ventas para cerrar más contratos.",
+      "image": "/images/embudoVentas.jpg",
+      "linkArticle": "/como-optimizar-tu-embudo-de-ventas"
+    },
+    {
+      "id": 2,
+      "title": "Ventas B2B: Estrategias que marcan la diferencia",
+      "date": "5 DE AGOSTO DE 2024",
+      "description": "Conoce las mejores tácticas para ventas B2B efectivas.",
+      "image": "/images/ventasB2b.jpg",
+      "linkArticle": "/ventas-b2b-estrategias"
+    },
+    {
+      "id": 3,
+      "title": "El poder del seguimiento: ¿Por qué es clave?",
+      "date": "18 DE JUNIO DE 2024",
+      "description": "Aprende a hacer seguimiento efectivo y aumentar tus cierres de ventas.",
+      "image": "/images/seguimiento.jpg",
+      "linkArticle": "/el-poder-del-seguimiento"
+    },
+    {
+      "id": 4,
+      "title": "Tendencias en el área comercial para 2025",
+      "date": "22 DE JULIO DE 2024",
+      "description": "Mantente al día con las últimas tendencias en el mundo de las ventas.",
+      "image": "/images/tendenciasComerciales.jpg",
+      "linkArticle": "/tendencias-en-el-area-comercial-2025"
+    }
+  ]
+  

@@ -1,0 +1,55 @@
+{
+  "marketing": [
+    {
+      "id": "1",
+      "image": "/images/creadorDeContenido.jpg",
+      "title": "¿Eres un creador de contenido? Únete a Hitpoly",
+      "subtitle": "Buscamos creadores de contenido para marketing digital. Si eres experto en redes sociales, SEO o cualquier plataforma, ¡te necesitamos!",
+      "creator": "Hitpoly",
+      "date": "6 de Diciembre, 2024",
+      "linkCategoria": "/postVentas1",
+      "linkText": "MARKETING",
+      "linkArticle": "/post/creador-de-contenido"
+    }
+  ],
+  "ventas": [
+    {
+      "id": "2",
+      "image": "/images/OportunidadesEnVentas.jpg",
+      "title": "¿Eres closer o setter? Oportunidad en ventas en Hitpoly",
+      "subtitle": "Únete a nuestro equipo de ventas como closer o setter y ayuda a cerrar negocios de alto impacto. ¡Potencia tus habilidades con nosotros!",
+      "creator": "Hitpoly",
+      "date": "6 de Diciembre, 2024",
+      "linkCategoria": "/postVentas1",
+      "linkText": "VENTAS",
+      "linkArticle": "/post/oportunidades-en-ventas"
+    }
+  ],
+
+  "servicio_al_cliente": [
+    {
+      "id": "3",
+      "image": "https://via.placeholder.com/200",
+      "title": "Atención al cliente excepcional: Tu oportunidad en Hitpoly",
+      "subtitle": "Si tienes habilidades en atención al cliente, únete a nuestro equipo y ofrece experiencias excepcionales que fidelicen a nuestros usuarios.",
+      "creator": "Hitpoly",
+      "date": "7 de Diciembre, 2024",
+      "linkCategoria": "/postServicioCliente1",
+      "linkText": "TECNOLOGÍA",
+      "linkArticle": "/post/oportunidades-en-servicio-al-cliente"
+    }
+  ],
+  "tecnologia": [
+    {
+      "id": "4",
+      "image": "/images/fullStack.jpg",
+      "title": "¡Desarrolladores Full Stack, te estamos buscando!",
+      "subtitle": "Si eres desarrollador full stack, únete a Hitpoly y trabaja con tecnologías de punta en proyectos innovadores.",
+      "creator": "Hitpoly",
+      "date": "5 de Diciembre, 2024",
+      "linkCategoria": "/postPrincipal",
+      "linkText": "TECNOLOGÍA",
+      "linkArticle": "/post/oportunidades-en-desarrollo"
+    }
+  ]
+}

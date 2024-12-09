@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardContent, Typography, Box, Button } from "@mui/material";
 
-const FreeRecursoCard = () => {
+const FreeRecursoCard = ({ title, description, imageUrl, buttonText }) => {
   return (
     <Card
       sx={{
@@ -17,16 +17,16 @@ const FreeRecursoCard = () => {
     >
       <CardContent sx={{ marginTop: "0px", marginLeft: "20px", marginRight: "20px" }}>
         <Typography variant="h6" sx={{ color: "#211E26", marginBottom: "10px" }}>
-          Plantillas Gratuitas para Crear Estrategias de Ventas
+          {title}
         </Typography>
         <Typography variant="body2" sx={{ color: "#A0A0A0", marginBottom: "20px", fontSize: "1rem" }}>
-          Descarga estas plantillas para diseñar un plan de ventas efectivo y aumentar tu tasa de conversión.
+          {description}
         </Typography>
 
         {/* Imagen añadida */}
         <Box sx={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
           <img
-            src="https://via.placeholder.com/200x100"
+            src={imageUrl}
             alt="Estrategia de Ventas"
             style={{
               width: "100%",
@@ -57,7 +57,7 @@ const FreeRecursoCard = () => {
             },
           }}
         >
-          Descargar Ahora
+          {buttonText}
         </Button>
       </Box>
     </Card>

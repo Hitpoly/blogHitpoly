@@ -14,6 +14,14 @@ const TecnologiaCards = () => {
     setTechnologyArticles(articlesData);
   }, []);
 
+  const freeRecursoData = {
+    title: "Guía para Iniciarte en la Digitalización en 2025",
+    description:
+      "Descarga esta plantilla para estructurar tu estrategia de digitalización de manera efectiva este 2025.",
+    imageUrl: "/images/digitalizacionGlobal.jpg", // Asegúrate de tener una URL válida de la imagen
+    buttonText: "Descargar ahora",
+  };
+
   return (
     <Box>
       <Box
@@ -96,7 +104,12 @@ const TecnologiaCards = () => {
           </Grid>
           {/* Carta sola con la plantilla gratuita */}
           <Grid item xs={12} md={3}>
-            <FreeRecursoCard />
+          <FreeRecursoCard
+              title={freeRecursoData.title}
+              description={freeRecursoData.description}
+              imageUrl={freeRecursoData.imageUrl}
+              buttonText={freeRecursoData.buttonText}
+            />
           </Grid>
         </Grid>
       </Box>

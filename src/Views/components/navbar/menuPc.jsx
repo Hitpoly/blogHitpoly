@@ -2,21 +2,25 @@ import React, { useState, useRef } from "react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import EleganteBoton from "../botones/agendaUnaConsulta";
 import BotonContactar from "../botones/contactarAhora";
+import SubmenuBlogServicios from "./subNav/ordenador/servicios"
+import SubmenuRecursos from "./subNav/ordenador/recursos"
+import SubmenuSoluciones from "./subNav/ordenador/soluciones"
+import SectoresYDepartamentos from "./subNav/ordenador/sectores"
 
-const Servicios = () => <Box p={2}>Contenido de Servicios</Box>;
-const Soluciones = () => <Box p={2}>Contenido de Soluciones</Box>;
-const Sectores = () => <Box p={2}>Contenido de Sectores</Box>;
-const Recursos = () => <Box p={2}>Contenido de Recursos</Box>;
+const Servicios = () => <Box p={2}>Esta sección esta en mantenimiento</Box>;
+const Soluciones = () => <Box p={2}>Esta sección esta en mantenimiento</Box>;
+const Sectores = () => <Box p={2}>Esta sección esta en mantenimiento</Box>;
+const Recursos = () => <Box p={2}>Esta sección esta en mantenimiento</Box>;
 
 const MenuDeNavegacionPc = () => {
   const [hoveredItem, setHoveredItem] = useState(null); // Elemento seleccionado
   const timeoutRef = useRef(null); // Referencia para gestionar el retraso
 
   const menuItems = [
-    { label: "Servicios", component: <Servicios /> },
-    { label: "Soluciones", component: <Soluciones /> },
-    { label: "Sectores", component: <Sectores /> },
-    { label: "Recursos", component: <Recursos /> },
+    { label: "Servicios", component: <SubmenuBlogServicios /> },
+    { label: "Soluciones", component: <SubmenuSoluciones /> },
+    { label: "Sectores", component: <SectoresYDepartamentos /> },
+    { label: "Recursos", component: <SubmenuRecursos /> },
   ];
 
   // Manejo del hover con retraso

@@ -10,6 +10,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import EleganteBoton from "../botones/agendaUnaConsulta";
 import BotonContactar from "../botones/contactarAhora";
+import SubmenuBlogServiciosMovile from "./subNav/movil/servicios"
+import SubmenuRecursosMovil from "./subNav/movil/recursos"
+import SectoresYDepartamentos from "./subNav/movil/sectores"
+import SubmenuBlogSolucionesMovile from "./subNav/movil/soluciones"
 
 // Componentes de contenido
 const ServiciosContenido = () => <Box p={2}>Contenido de Servicios</Box>;
@@ -23,10 +27,10 @@ const MenuDeNavegacionMobile = () => {
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const menuItems = [
-    { label: "Servicios", component: <ServiciosContenido /> },
-    { label: "Soluciones", component: <SolucionesContenido /> },
-    { label: "Sectores", component: <SectoresContenido /> },
-    { label: "Recursos", component: <RecursosContenido /> },
+    { label: "Sectores", component: <SectoresYDepartamentos /> },
+    { label: "Soluciones", component: <SubmenuBlogSolucionesMovile /> },
+    { label: "Servicios", component: <SubmenuBlogServiciosMovile /> },
+    { label: "Recursos", component: <SubmenuRecursosMovil /> },
   ];
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);

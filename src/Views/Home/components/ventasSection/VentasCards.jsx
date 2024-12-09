@@ -14,6 +14,16 @@ const VentasCards = () => {
     setSalesArticles(articlesData);
   }, []);
 
+  // Datos para la tarjeta de plantilla gratuita
+  const freeRecursoData = {
+    title: "Plantilla Gratuita para tu Estrategia de Ventas 2025",
+    description:
+      "Descarga esta plantilla para estructurar tu estrategia de ventas para el 2025 de manera efectiva.",
+    imageUrl: "/images/estrategiaDeVentas.jpg", // Asegúrate de tener una URL válida de la imagen
+    buttonText: "Descargar ahora",
+  };
+  
+
   return (
     <Box>
       <Box
@@ -84,6 +94,15 @@ const VentasCards = () => {
           spacing={1}
           sx={{ flexDirection: "row", margin: 0, padding: 0 }}
         >
+          {/* Carta sola con la plantilla gratuita */}
+          <Grid item xs={12} md={3}>
+            <FreeRecursoCard
+              title={freeRecursoData.title}
+              description={freeRecursoData.description}
+              imageUrl={freeRecursoData.imageUrl}
+              buttonText={freeRecursoData.buttonText}
+            />
+          </Grid>
           {/* Las 4 cartas de los artículos sobre ventas */}
           <Grid item xs={12} md={9}>
             <Grid container spacing={1}>
@@ -93,10 +112,6 @@ const VentasCards = () => {
                 </Grid>
               ))}
             </Grid>
-          </Grid>
-          {/* Carta sola con la plantilla gratuita */}
-          <Grid item xs={12} md={3}>
-            <FreeRecursoCard />
           </Grid>
         </Grid>
       </Box>

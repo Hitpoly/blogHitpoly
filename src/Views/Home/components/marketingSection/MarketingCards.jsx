@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
-import { Link } from "react-router-dom"; // Corregido: Importar Link desde react-router-dom
-import ArticleCard from "../../../components/cards/articulosSection"; // Importamos el componente de Artículo
-import FreeRecursoCard from "../../../components/cards/recursoDescargable"; // Importamos el componente de Plantilla Gratuita
+import { Link } from "react-router-dom";
+import ArticleCard from "../../../components/cards/articulosSection";
+import FreeRecursoCard from "../../../components/cards/recursoDescargable";
 import articlesData from "./marketingSection.json";
 
 const MarketingCards = () => {
@@ -12,6 +12,14 @@ const MarketingCards = () => {
   useEffect(() => {
     setSalesArticles(articlesData);
   }, []);
+
+  // Datos para la tarjeta de plantilla gratuita
+  const freeRecursoData = {
+    title: "Plantilla Gratuita para tu Estrategia de Marketing",
+    description: "Descarga esta plantilla para estructurar tu estrategia de marketing de manera efectiva.",
+    imageUrl: "/images/estrategiaDeMarketing.jpg", // Asegúrate de tener una URL válida de la imagen
+    buttonText: "Descargar ahora",
+  };
 
   return (
     <Box>
@@ -67,12 +75,11 @@ const MarketingCards = () => {
                   display: "flex",
                   alignItems: "center",
                   "&:hover": { color: "#4285F4" },
-                  "&:hover svg": { color: "#4285F4" }, // Cambiar el color del ícono
+                  "&:hover svg": { color: "#4285F4" },
                 }}
               >
                 Ver más artículos sobre Marketing
-                <ArrowOutwardIcon sx={{ color: "inherit" }} />{" "}
-                {/* Inherit para usar el color del texto */}
+                <ArrowOutwardIcon sx={{ color: "inherit" }} />
               </Typography>
             </Link>
           </Box>
@@ -94,9 +101,15 @@ const MarketingCards = () => {
               ))}
             </Grid>
           </Grid>
+
           {/* Carta sola con la plantilla gratuita */}
           <Grid item xs={12} md={3}>
-            <FreeRecursoCard />
+            <FreeRecursoCard
+              title={freeRecursoData.title}
+              description={freeRecursoData.description}
+              imageUrl={freeRecursoData.imageUrl}
+              buttonText={freeRecursoData.buttonText}
+            />
           </Grid>
         </Grid>
       </Box>

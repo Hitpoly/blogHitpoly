@@ -1,180 +1,122 @@
-import React, { useState } from "react";
-import { Box, Typography, Button } from "@mui/material";
-import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
-import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import React from "react";
+import { Box, Typography } from "@mui/material";
+import LaptopMacIcon from "@mui/icons-material/LaptopMac";
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import StoreIcon from "@mui/icons-material/Store";
 import SchoolIcon from "@mui/icons-material/School";
-import HomeIcon from "@mui/icons-material/Home";
-import HotelIcon from "@mui/icons-material/Hotel";
+import ApartmentIcon from "@mui/icons-material/Apartment";
+import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
+import CampaignIcon from "@mui/icons-material/Campaign";
+import SellIcon from "@mui/icons-material/Sell";
+import PeopleIcon from "@mui/icons-material/People";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import ComputerIcon from "@mui/icons-material/Computer";
+import SupportAgentIcon from "@mui/icons-material/SupportAgent";
+import MoveToInboxIcon from "@mui/icons-material/MoveToInbox";
+import Desplazable from "./desplazable/elementoDesplazable"; // Importamos el componente Desplegable
 
-// Datos de los sectores
+// Datos de los sectores con íconos y enlaces
 const sectores = [
   {
     name: "Tecnología y Software",
-    icon: <BusinessCenterIcon sx={{ color: "#00B0FF" }} />,
+    icon: <LaptopMacIcon sx={{ color: "#00B0FF" }} />,
+    link: "/tecnologia-y-software", // Enlace correspondiente
   },
   {
     name: "Salud y Bienestar",
-    icon: <HealthAndSafetyIcon sx={{ color: "#4CAF50" }} />,
+    icon: <LocalHospitalIcon sx={{ color: "#4CAF50" }} />,
+    link: "/salud-y-bienestar", // Enlace correspondiente
   },
   {
     name: "E-commerce y Retail",
-    icon: <ShoppingCartIcon sx={{ color: "#FF9800" }} />,
+    icon: <StoreIcon sx={{ color: "#FF9800" }} />,
+    link: "/ecommerce-y-retail", // Enlace correspondiente
   },
   {
     name: "Educación y Formación",
     icon: <SchoolIcon sx={{ color: "#FFEB3B" }} />,
+    link: "/educacion-y-formacion", // Enlace correspondiente
   },
   {
     name: "Inmobiliario",
-    icon: <HomeIcon sx={{ color: "#8BC34A" }} />,
+    icon: <ApartmentIcon sx={{ color: "#8BC34A" }} />,
+    link: "/inmobiliario", // Enlace correspondiente
   },
   {
     name: "Turismo y Viajes",
-    icon: <HotelIcon sx={{ color: "#FFC107" }} />,
+    icon: <TravelExploreIcon sx={{ color: "#FFC107" }} />,
+    link: "/turismo-y-viajes", // Enlace correspondiente
   },
   {
     name: "Restauración y Alimentos",
     icon: <RestaurantIcon sx={{ color: "#FF5722" }} />,
+    link: "/restauracion-y-alimentos", // Enlace correspondiente
   },
 ];
 
-// Datos de los departamentos (ejemplo)
+// Datos de los departamentos con íconos y enlaces
 const departamentos = [
-  { name: "Marketing" },
-  { name: "Ventas" },
-  { name: "Recursos Humanos" },
-  { name: "Finanzas" },
-  { name: "IT" },
-  { name: "Atención al Cliente" },
-  { name: "Logística" },
+  {
+    name: "Marketing",
+    icon: <CampaignIcon sx={{ color: "#00B0FF" }} />,
+    link: "/marketing", // Enlace correspondiente
+  },
+  {
+    name: "Ventas",
+    icon: <SellIcon sx={{ color: "#FF9800" }} />,
+    link: "/ventas", // Enlace correspondiente
+  },
+  {
+    name: "Recursos Humanos",
+    icon: <PeopleIcon sx={{ color: "#4CAF50" }} />,
+    link: "/recursos-humanos", // Enlace correspondiente
+  },
+  {
+    name: "Finanzas",
+    icon: <AccountBalanceIcon sx={{ color: "#00B0FF" }} />,
+    link: "/finanzas", // Enlace correspondiente
+  },
+  {
+    name: "IT",
+    icon: <ComputerIcon sx={{ color: "#3B207F" }} />,
+    link: "/it", // Enlace correspondiente
+  },
+  {
+    name: "Atención al Cliente",
+    icon: <SupportAgentIcon sx={{ color: "#FF5722" }} />,
+    link: "/atencion-al-cliente", // Enlace correspondiente
+  },
+  {
+    name: "Logística",
+    icon: <MoveToInboxIcon sx={{ color: "#FFC107" }} />,
+    link: "/logistica", // Enlace correspondiente
+  },
 ];
 
 const SectoresYDepartamentos = () => {
-  const [showAllSectores, setShowAllSectores] = useState(false);
-
-  // Mostrar solo los primeros 5 sectores
-  const sectoresToDisplay = showAllSectores ? sectores : sectores.slice(0, 5);
-
   return (
     <Box
       sx={{
         backgroundColor: "#fff",
         borderRadius: "8px",
-        padding: "16px",
-        maxWidth: "1000px",
         width: "100%",
       }}
     >
-      <Typography
-        variant="h6"
-        sx={{ fontWeight: 500, color: "#333", marginBottom: "16px" }}
-      >
-        Sectores y Departamentos
-      </Typography>
+      <Box sx={{ padding: "20px" }}>
+        <Typography
+          variant="h6"
+          sx={{ fontWeight: 500, color: "#333", marginBottom: "16px" }}
+        >
+          Sectores y Departamentos
+        </Typography>
 
-      <Box sx={{ display: "flex", gap: "32px" }}>
-        {/* Columna de Sectores */}
-        <Box sx={{ flex: 1 }}>
-          <Typography
-            variant="subtitle1"
-            sx={{
-              fontWeight: "bold",
-              color: "#333",
-              marginBottom: "16px",
-            }}
-          >
-            Sectores
-          </Typography>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            {sectoresToDisplay.map((sector, index) => (
-              <Box
-                key={index}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  padding: "8px",
-                  borderRadius: "4px",
-                  transition: "background-color 0.3s ease",
-                  "&:hover": { backgroundColor: "#f5f5f5" },
-                  margin: "0", // Asegura que no haya márgenes adicionales
-                }}
-              >
-                {sector.icon}
-                <Typography
-                  variant="body2"
-                  sx={{
-                    color: "#555",
-                    textAlign: "left",
-                    textDecoration: "none", // Elimina el subrayado
-                    cursor: "pointer", // Cambia el cursor al hacer hover
-                    "&:hover": {
-                      backgroundColor: "transparent", // Evita cualquier cambio visual
-                    },
-                  }}
-                >
-                  {sector.name}
-                </Typography>
-              </Box>
-            ))}
-          </Box>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+          {/* Fila de Sectores */}
+          <Desplazable titulo="Sectores" data={sectores} />
 
-          <Button
-            onClick={() => setShowAllSectores(!showAllSectores)}
-            sx={{
-              marginTop: "16px",
-              color: "#00B0FF",
-              textTransform: "none",
-              "&:hover": { backgroundColor: "transparent" },
-            }}
-          >
-            {showAllSectores ? "Ver menos sectores" : "Ver todos los sectores"}
-          </Button>
-        </Box>
-
-        {/* Columna de Departamentos */}
-        <Box sx={{ flex: 1 }}>
-          <Typography
-            variant="subtitle1"
-            sx={{
-              fontWeight: "bold",
-              color: "#333",
-              marginBottom: "16px",
-            }}
-          >
-            Departamentos
-          </Typography>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            {departamentos.map((departamento, index) => (
-              <Box
-                key={index}
-                sx={{
-                  padding: "8px",
-                  borderRadius: "4px",
-                  backgroundColor: "#f5f5f5",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  "&:hover": { backgroundColor: "#e0e0e0" },
-                  margin: "0", // Asegura que no haya márgenes adicionales
-                }}
-              >
-                <Typography
-                  variant="body2"
-                  sx={{
-                    color: "#555",
-                    textAlign: "left",
-                    textDecoration: "none", // Elimina el subrayado
-                    cursor: "pointer", // Cambia el cursor al hacer hover
-                  }}
-                >
-                  {departamento.name}
-                </Typography>
-              </Box>
-            ))}
-          </Box>
+          {/* Fila de Departamentos */}
+          <Desplazable titulo="Departamentos" data={departamentos} />
         </Box>
       </Box>
     </Box>

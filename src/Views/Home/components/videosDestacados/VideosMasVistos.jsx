@@ -49,8 +49,8 @@ function VideosDestacados() {
         <Swiper
           ref={swiperRef} // Referencia de Swiper
           modules={[Navigation, Pagination, Autoplay]}
-          spaceBetween={30}
-          slidesPerView={3}
+          spaceBetween={100}
+          slidesPerView={1}
           loop={true}
           autoplay={{ delay: 3000 }}
           pagination={{

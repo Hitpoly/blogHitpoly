@@ -12,21 +12,22 @@ const ArticleCard = ({ article }) => {
         boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.3)",
         margin: "0px",
         display: "flex",
-        flexDirection: "row",
+        flexDirection: { xs: "column", md: "row" },
         padding: "20px",
         position: "relative",
       }}
     >
-      {/* Imagen pequeña a la izquierda */}
+      {/* Imagen pequeña */}
       <Box
         sx={{
           position: "relative",
           flexShrink: 0,
-          marginRight: "20px",
-          width: "120px", // Tamaño pequeño
-          height: "120px", // Tamaño pequeño
-          overflow: "hidden", // Para asegurar que la imagen no se desborde
-          borderRadius: "10px", // Bordes redondeados
+          marginRight: { xs: "0", md: "20px" },
+          marginBottom: { xs: "20px", md: "0" },
+          width: { xs: "100%", md: "120px" },
+          height: { xs: "200px", md: "120px" },
+          overflow: "hidden",
+          borderRadius: "10px",
         }}
       >
         <img
@@ -35,7 +36,7 @@ const ArticleCard = ({ article }) => {
           style={{
             width: "100%",
             height: "100%",
-            objectFit: "cover", // Esto asegura que la imagen se ajuste correctamente
+            objectFit: "cover",
             transition: "transform 0.3s ease",
           }}
           onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
@@ -44,7 +45,7 @@ const ArticleCard = ({ article }) => {
       </Box>
 
       {/* Contenido */}
-      <CardContent sx={{ flexGrow: 1 }}>
+      <CardContent sx={{ flexGrow: 1, textAlign: "left" }}>
         <Typography variant="body2" sx={{ color: "#B51AD8" }}>
           {article.date}
         </Typography>
@@ -74,28 +75,50 @@ const ArticleCard = ({ article }) => {
         </Typography>
       </CardContent>
 
-      {/* Flecha a la derecha */}
+      {/* Contenedor del ícono y texto */}
       <Box
         sx={{
-          position: "absolute",
-          bottom: "10px",
-          right: { xs: "10px", md: "20px" },
-          backgroundColor: "#F21C63",
-          borderRadius: "50%",
-          padding: "3px",
-          display: { xs: "none", md: "flex" },
-          justifyContent: "center",
+          position: { xs: "static", md: "absolute" },
+          bottom: { md: "10px" },
+          right: { md: "20px" },
+          marginTop: { xs: "20px", md: "0" },
+          display: "flex",
+          justifyContent: { xs: "center", md: "flex-start" },
           alignItems: "center",
-          cursor: "pointer",
-          transition: "transform 0.3s ease",
-          "&:hover": {
-            transform: "scale(1.2)",
-            backgroundColor: "#e11b55",
-          },
         }}
       >
         <Link to={article.linkArticle} style={{ textDecoration: "none" }}>
-          <ArrowOutwardIcon sx={{ color: "#fff" }} />
+          <Box
+            sx={{
+              backgroundColor: "#F21C63",
+              borderRadius: {xs: "25px", md: "50%"},
+              padding: { xs: "10px 15px", md: "3px" },
+              width: { xs: "auto", md: "auto" },
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: { xs: "8px", md: "0" },
+              cursor: "pointer",
+              transition: "transform 0.3s ease",
+              "&:hover": {
+                transform: "scale(1.2)",
+                backgroundColor: "#e11b55",
+              },
+            }}
+          >
+            <ArrowOutwardIcon sx={{ color: "#fff", fontSize: { xs: "20px", md: "inherit" } }} />
+            {/* Texto adicional solo para móviles */}
+            <Typography
+              sx={{
+                display: { xs: "block", md: "none" },
+                color: "#fff",
+                fontSize: "0.9rem",
+                fontWeight: "bold",
+              }}
+            >
+              Ver artículo
+            </Typography>
+          </Box>
         </Link>
       </Box>
     </Card>

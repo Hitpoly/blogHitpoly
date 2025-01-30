@@ -16,7 +16,7 @@ function CaptadorCorreo({ image, title, description }) {
       sx={{
         alignItems: "center",
         backgroundColor: "#f4f4f4",
-        borderRadius: {xs: "0px 15px 15px 0px", md: "15px"},
+        borderRadius: { xs: "0px 15px 15px 0px", md: "15px" },
         padding: { xs: "0px 20px", md: "0px 30px" },
         paddingTop: { xs: "10px", md: "30px" },
         marginTop: { xs: "20px", md: "80px" },
@@ -45,14 +45,19 @@ function CaptadorCorreo({ image, title, description }) {
           display: "flex",
           justifyContent: "center",
           padding: { xs: "20px", md: "50px 50px" },
-          paddingBottom: {md: "20px" },
+          paddingBottom: { md: "20px" },
         }}
       >
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
           {/* Título */}
           <Typography
             variant="h5"
-            sx={{ fontWeight: "400", color: "#333", textAlign: "center", fontSize: "1.2rem" }}
+            sx={{
+              fontWeight: "400",
+              color: "#333",
+              textAlign: "center",
+              fontSize: "1.2rem",
+            }}
           >
             {title}
           </Typography>
@@ -61,9 +66,10 @@ function CaptadorCorreo({ image, title, description }) {
           <Box
             sx={{
               display: "flex",
+              flexDirection: { xs: "column", md: "row" }, // Cambia la dirección según el tamaño de pantalla
               alignItems: "center",
               justifyContent: "center",
-              gap: 1,
+              gap: { xs: 2, md: 1 }, // Espaciado dinámico
               padding: "10px 0px",
               width: "100%",
             }}
@@ -77,7 +83,13 @@ function CaptadorCorreo({ image, title, description }) {
             <Button
               variant="contained"
               color="primary"
-              sx={{ whiteSpace: "nowrap", borderRadius: "25px", padding: "7px 30px", backgroundColor: "#F21C63" }}
+              sx={{
+                whiteSpace: "nowrap",
+                borderRadius: "25px",
+                padding: "7px 30px",
+                backgroundColor: "#F21C63",
+                width: { xs: "100%", md: "auto" }, // Botón ocupa toda la anchura en móviles
+              }}
             >
               Enviar
             </Button>
@@ -87,7 +99,12 @@ function CaptadorCorreo({ image, title, description }) {
           <Typography
             variant="body1"
             color="text.secondary"
-            sx={{padding: "10px 10px", lineHeight: 1.6, alignItems: "center", fontSize: "0.8rem" }}
+            sx={{
+              padding: "10px 10px",
+              lineHeight: 1.6,
+              alignItems: "center",
+              fontSize: "0.8rem",
+            }}
           >
             {description}
           </Typography>

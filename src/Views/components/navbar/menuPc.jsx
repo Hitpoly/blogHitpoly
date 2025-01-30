@@ -1,16 +1,11 @@
 import React, { useState, useRef } from "react";
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import EleganteBoton from "../botones/agendaUnaConsulta";
 import BotonContactar from "../botones/contactarAhora";
-import SubmenuBlogServicios from "./subNav/ordenador/servicios"
-import SubmenuRecursos from "./subNav/ordenador/recursos"
-import SubmenuSoluciones from "./subNav/ordenador/soluciones"
-import SectoresYDepartamentos from "./subNav/ordenador/sectores"
-
-const Servicios = () => <Box p={2}>Esta sección esta en mantenimiento</Box>;
-const Soluciones = () => <Box p={2}>Esta sección esta en mantenimiento</Box>;
-const Sectores = () => <Box p={2}>Esta sección esta en mantenimiento</Box>;
-const Recursos = () => <Box p={2}>Esta sección esta en mantenimiento</Box>;
+import SubmenuBlogServicios from "./subNav/ordenador/servicios";
+import SubmenuRecursos from "./subNav/ordenador/recursos";
+import SubmenuSoluciones from "./subNav/ordenador/soluciones";
+import SectoresYDepartamentos from "./subNav/ordenador/sectores";
 
 const MenuDeNavegacionPc = () => {
   const [hoveredItem, setHoveredItem] = useState(null); // Elemento seleccionado
@@ -18,8 +13,6 @@ const MenuDeNavegacionPc = () => {
 
   const menuItems = [
     { label: "Servicios", component: <SubmenuBlogServicios /> },
-    { label: "Soluciones", component: <SubmenuSoluciones /> },
-    { label: "Sectores", component: <SectoresYDepartamentos /> },
     { label: "Recursos", component: <SubmenuRecursos /> },
   ];
 
@@ -49,8 +42,8 @@ const MenuDeNavegacionPc = () => {
           zIndex: 1000,
         }}
       >
-        {/* Navegación de escritorio */}
-        <Box sx={{ marginLeft: "30px", display: "flex", gap: 3 }}>
+        {/* Contenedor de los items de menú */}
+        <Box sx={{ display: "flex", gap: 3 }}>
           {menuItems.map((item, index) => (
             <Box
               key={index}
@@ -93,17 +86,26 @@ const MenuDeNavegacionPc = () => {
           ))}
         </Box>
 
-        {/* Logo */}
+        {/* Logo centrado */}
         <Box
-          component="img"
-          src="/images/logo-hitpoly.png"
-          alt="Logo"
           sx={{
-            height: "40px",
-            width: "auto",
-            cursor: "pointer",
+            position: "absolute",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 10,
           }}
-        />
+        >
+          <Box
+            component="img"
+            src="/images/logo-hitpoly.png"
+            alt="Logo"
+            sx={{
+              height: "40px",
+              width: "auto",
+              cursor: "pointer",
+            }}
+          />
+        </Box>
 
         {/* Contenedor para los botones de escritorio */}
         <Box sx={{ display: "flex", gap: 2 }}>

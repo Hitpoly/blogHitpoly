@@ -30,16 +30,16 @@ const SubmenuBlogServicios = () => {
     {
       title: "Marketing Digital",
       items: [
-        { name: "Google Ads", link: "/google-ads", icon: <CampaignIcon sx={iconStyle('#4285F4')} /> },
-        { name: "Meta Ads", link: "/meta-ads", icon: <FacebookIcon sx={iconStyle('#1877F2')} /> },
+        { name: "Google Ads", link: "https://hitpoly.com/servicios/publicidad-digital", icon: <CampaignIcon sx={iconStyle('#4285F4')} /> },
+        { name: "Meta Ads", link: "https://hitpoly.com/servicios/publicidad-digital", icon: <FacebookIcon sx={iconStyle('#1877F2')} /> },
         {
           name: "Gestión de redes sociales",
-          link: "/gestion-redes",
+          link: "https://hitpoly.com/servicios/redes-sociales",
           icon: <PeopleIcon sx={iconStyle('#34B7F1')} />,
         },
         {
           name: "Marketing de contenidos",
-          link: "/marketing-contenidos",
+          link: "https://hitpoly.com/servicios/redes-sociales",
           icon: <ContentPasteIcon sx={iconStyle('#DB4437')} />,
         },
       ],
@@ -49,18 +49,18 @@ const SubmenuBlogServicios = () => {
       items: [
         {
           name: "Aplicaciones móviles",
-          link: "/apps-moviles",
+          link: "https://hitpoly.com/servicios/desarrollo-software",
           icon: <SmartphoneIcon sx={iconStyle('#F4B400')} />,
         },
         {
           name: "Sistemas personalizados",
-          link: "/sistemas",
+          link: "https://hitpoly.com/servicios/desarrollo-software",
           icon: <WebIcon sx={iconStyle('#202124')} />,
         },
         { name: "E-commerce", link: "/ecommerce", icon: <ShoppingCartIcon sx={iconStyle('#00A9E0')} /> },
         {
           name: "APIs e integraciones",
-          link: "/apis",
+          link: "https://hitpoly.com/servicios/desarrollo-software",
           icon: <ApiIcon sx={iconStyle('#0F9D58')} />,
         },
       ],

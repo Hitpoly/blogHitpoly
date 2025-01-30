@@ -18,19 +18,19 @@ const AccordionFooter = () => {
       title: "Enlaces Rápidos",
       links: [
         { text: "Inicio", url: "/" },
-        { text: "Portafolio", url: "/portfolio" },
-        { text: "Blog", url: "" },
-        { text: "Nosotros", url: "/nosotros" },
-        { text: "Contacto", url: "/contact" },
+        { text: "Portafolio", url: "https://hitpoly.com/portfolio" },
+        { text: "Blog", url: "/" },
+        { text: "Nosotros", url: "https://hitpoly.com/nosotros" },
+        { text: "Contacto", url: "https://hitpoly.com/contact" },
       ],
     },
     {
       title: "Políticas",
       links: [
-        { text: "Políticas de privacidad", url: "/privacypolicy" },
-        { text: "Descargo de responsabilidad", url: "/disclaimer" },
-        { text: "Términos y condiciones", url: "/termsandconditions" },
-        { text: "Copyright", url: "/Copyright" },
+        { text: "Políticas de privacidad", url: "https://hitpoly.com/privacypolicy" },
+        { text: "Descargo de responsabilidad", url: "https://hitpoly.com/disclaimer" },
+        { text: "Términos y condiciones", url: "https://hitpoly.com/termsandconditions" },
+        { text: "Copyright", url: "https://hitpoly.com/Copyright" },
       ],
     },
     {

@@ -49,6 +49,7 @@ function Portada() {
               display: "flex",
               flexDirection: "column",
               paddingTop: "0px",
+              marginTop: {xs: "-50px", md: "0"},
             }}
           >
             <Box>

@@ -11,12 +11,7 @@ const iconStyles = [
   {
     icon: <InstagramIcon />,
     backgroundColor: "#B51AD8",
-    link: "https://www.instagram.com/hitpoly/",
-  },
-  {
-    icon: <FacebookIcon />,
-    backgroundColor: "#B51AD8",
-    link: "https://www.facebook.com/Hitpoly",
+    link: "https://www.instagram.com/hitpolyagencia/",
   },
   {
     icon: <LinkedInIcon />,
@@ -120,7 +115,7 @@ const Footer = () => {
               Home
             </Link>
             <Link
-              href="/portfolio"
+              href="https://hitpoly.com/portfolio"
               color="#211E26"
               underline="none"
               display="block"
@@ -134,7 +129,7 @@ const Footer = () => {
               Portafolio
             </Link>
             <Link
-              href=""
+              href="/"
               color="#211E26"
               underline="none"
               display="block"
@@ -148,7 +143,7 @@ const Footer = () => {
               Blog
             </Link>
             <Link
-              href="/nosotros"
+              href="https://hitpoly.com/nosotros"
               color="#211E26"
               underline="none"
               display="block"
@@ -162,7 +157,7 @@ const Footer = () => {
               Nosotros
             </Link>
             <Link
-              href="/contact"
+              href="https://hitpoly.com/contact"
               color="#211E26"
               underline="none"
               display="block"
@@ -187,7 +182,7 @@ const Footer = () => {
               POLITICAS
             </Typography>
             <Link
-              href="/privacypolicy"
+              href="https://hitpoly.com/privacypolicy"
               color="#211E26"
               underline="none"
               display="block"
@@ -201,7 +196,7 @@ const Footer = () => {
               Politicas de privacidad
             </Link>
             <Link
-              href="/disclaimer"
+              href="https://hitpoly.com/disclaimer"
               color="#211E26"
               underline="none"
               display="block"
@@ -215,7 +210,7 @@ const Footer = () => {
               Descargo de responsabilidad
             </Link>
             <Link
-              href="/termsandconditions"
+              href="https://hitpoly.com/termsandconditions"
               color="#211E26"
               underline="none"
               display="block"
@@ -229,7 +224,7 @@ const Footer = () => {
               Terminos y condiciones
             </Link>
             <Link
-              href="/Copyright"
+              href="https://hitpoly.com/Copyright"
               color="#211E26"
               underline="none"
               display="block"

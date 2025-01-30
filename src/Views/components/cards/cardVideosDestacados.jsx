@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 function VideosMasDestacados({
   image,
   title,
-  linkArticle, 
+  linkArticle,
   linkText,
   duration,
   date,
@@ -31,7 +31,7 @@ function VideosMasDestacados({
   };
 
   return (
-    <Grid item xs={12} sm={12} md={12} sx={{ p: 0, m: 0 }}>
+    <Grid item xs={12} sm={6} md={4} sx={{ p: 0, m: 0 }}>
       <Card
         sx={{
           position: "relative",
@@ -52,13 +52,13 @@ function VideosMasDestacados({
             width: "100%",
             borderRadius: "10px 10px 0px 0px",
             height: "250px",
-            transition: "transform 0.3s ease", 
-            transform: hovered ? "scale(1.1)" : "scale(1)", 
+            transition: "transform 0.3s ease",
+            transform: hovered ? "scale(1.1)" : "scale(1)",
             cursor: "pointer",
           }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          onClick={handleClick} 
+          onClick={handleClick}
         />
 
         {/* Contenido del card */}
@@ -76,16 +76,16 @@ function VideosMasDestacados({
         >
           {/* Categoría */}
           <Box sx={{ marginBottom: "10px" }}>
-          <Typography
-                variant="body2"
-                sx={{
-                  color: "#F21C63",
-                  fontSize: "0.95rem",
-                  fontWeight: "600",
-                  transition: "color 0.3s ease",
-                  "&:hover": { color: "#4285F4" },
-                }}
-              >
+            <Typography
+              variant="body2"
+              sx={{
+                color: "#F21C63",
+                fontSize: "0.95rem",
+                fontWeight: "600",
+                transition: "color 0.3s ease",
+                "&:hover": { color: "#4285F4" },
+              }}
+            >
               <a
                 href="#"
                 style={{
@@ -93,7 +93,7 @@ function VideosMasDestacados({
                   color: "inherit",
                   cursor: "pointer",
                 }}
-                onClick={handleClick} 
+                onClick={handleClick}
               >
                 {linkText || "Categoría"}
               </a>
@@ -111,7 +111,7 @@ function VideosMasDestacados({
               cursor: "pointer",
               width: "90%",
               transition: "text-decoration 0.3s ease",
-              textDecoration: hovered ? "underline" : "none", 
+              textDecoration: hovered ? "underline" : "none",
             }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}

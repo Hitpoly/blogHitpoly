@@ -1,11 +1,13 @@
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";  // Únicamente esta línea
 import { Box } from "@mui/material";  // Esta también debe estar solo una vez
+import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./Views/Home/page";
 import MenuDeNavegacion from "./Views/components/navbar/navbar";
 import DashboardBlog from "./Views/dashboardBlog/page";
 import Login from "./Views/login/page";
-import HomeArticle from "./Views/HomeArticle/page";
+import HomeArticle from "./Views/HomeArticle/page.jsx";
+import { Box } from "@mui/material";
 
 function App() {
   const location = useLocation();

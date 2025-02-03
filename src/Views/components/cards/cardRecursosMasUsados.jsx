@@ -15,6 +15,7 @@ function RecursosMasUsadosBase({
   image,
   title,
   creator,
+  area,
   linkArticle, // Solo recibimos linkArticle
   linkText,
 }) {
@@ -137,7 +138,8 @@ function RecursosMasUsadosBase({
                 fontSize: "0.9rem",
               }}
             >
-              Por: {creator}
+              Area:{area}
+              {/* Por: {creator} */}
             </Typography>
 
             {/* Flecha para ir al artículo */}

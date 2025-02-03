@@ -5,18 +5,17 @@ import * as Yup from "yup";
 import styled from "@emotion/styled";
 import { Typography, Modal, Box, Button, TextField } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import authService from "../../../../src/services/authServices"; 
 import { signin } from "../../../reducers/user/userSlice";
 
-const fontFamily = "Inter";
-
+// Esquema de validación con Yup
 const LoginSchema = Yup.object().shape({
-  email: Yup.string().required("Campo requerido"),
-  password: Yup.string().required("Campo requerido"),
+  username: Yup.string().required("Campo requerido"),
+  password: Yup.string().min(6, "Mínimo 6 caracteres").required("Campo requerido"),
 });
 
+// Estilos personalizados
 const Title = styled.p({
-  fontSize: 38, 
+  fontSize: 38,
   fontWeight: 600,
   color: "#211E26",
   textAlign: "center",
@@ -24,14 +23,12 @@ const Title = styled.p({
 
 const SubTitle = styled.p({
   fontSize: 18,
- 
   textAlign: "center",
   color: "#200E24",
 });
 
 const TextGray = styled(Typography)({
   fontSize: 18,
- 
   fontWeight: 400,
   color: "#6b6b6b",
 });
@@ -43,16 +40,17 @@ const TextGrayBold = styled(Typography)({
 });
 
 const modalStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-  };
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  borderRadius: "10px",
+  boxShadow: 24,
+  p: 4,
+  textAlign: "center",
+};
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -61,23 +59,40 @@ const LoginForm = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
-  const handleSubmit = async (values) => {
+  // Función para enviar los datos al backend
+  const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const data = await authService.signin(values.email, values.password);
+      const response = await fetch("https://apiblog.hitpoly.com/ajax/usuarioController.php", {
+      // const response = await fetch("http://localhost/bloghitpoly/ajax/usuarioController.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          funcion: "login",  // Enviamos la función como parte del cuerpo
+          user: values.username,
+          pass: values.password,
+        }),
+      });
+  
+      const data = await response.json();
   
       if (data.status === "success") {
-        dispatch(signin(data));
+        dispatch(signin(data.user));
         navigate("/DashboardBlog");
       } else {
-        setModalMessage("El correo electrónico o la contraseña son incorrectos.");
+        setModalMessage(data.message || "El usuario o la contraseña son incorrectos.");
         setShowModal(true);
       }
     } catch (error) {
       console.error("Error:", error);
-      setModalMessage("No se pudo conectar con el servidor. Asegúrate de que el backend esté en funcionamiento.");
+      setModalMessage("No se pudo conectar con el servidor. Inténtalo más tarde.");
       setShowModal(true);
+    } finally {
+      setSubmitting(false);
     }
-  };  
+  };
+  
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -87,14 +102,14 @@ const LoginForm = () => {
     <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
       <Box width="400px">
         <Formik
-          initialValues={{ email: "", password: "" }}
+          initialValues={{ username: "", password: "" }}
           validationSchema={LoginSchema}
           onSubmit={handleSubmit}
         >
           {({ errors, touched, values, handleChange, handleBlur, isSubmitting }) => (
             <Form>
               <Box textAlign="center" py={2}>
-                <Title  >INICIAR SESIÓN</Title>
+                <Title>INICIAR SESIÓN</Title>
                 <SubTitle>La tecnología conectada con la ciencia</SubTitle>
               </Box>
 
@@ -102,13 +117,12 @@ const LoginForm = () => {
                 <TextField
                   fullWidth
                   label="Usuario"
-                  name="email"
-                  value={values.email}
+                  name="username"
+                  value={values.username}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={touched.email && Boolean(errors.email)}
-                  helperText={touched.email && errors.email}
-                  style={{ height: "50px" }}
+                  error={touched.username && Boolean(errors.username)}
+                  helperText={touched.username && errors.username}
                 />
               </Box>
 
@@ -138,7 +152,7 @@ const LoginForm = () => {
                 }}
                 disabled={isSubmitting || loading}
               >
-                {loading ? "Cargando..." : "Ingresar a mi cuenta"}
+                {isSubmitting || loading ? "Cargando..." : "Ingresar a mi cuenta"}
               </Button>
 
               <Box mt={2} textAlign="center">
@@ -151,19 +165,15 @@ const LoginForm = () => {
           )}
         </Formik>
 
-        <Modal
-          open={showModal}
-          onClose={handleCloseModal}
-          aria-labelledby="modal-title"
-          aria-describedby="modal-description"
-        >
+        <Modal open={showModal} onClose={handleCloseModal}>
           <Box sx={modalStyle}>
-            <Typography id="modal-title" variant="h6" component="h2">
+            <Typography variant="h6" component="h2">
               Error de autenticación
             </Typography>
-            <Typography id="modal-description" sx={{ mt: 2 }}>
-              {modalMessage}
-            </Typography>
+            <Typography sx={{ mt: 2 }}>{modalMessage}</Typography>
+            <Button onClick={handleCloseModal} sx={{ mt: 2 }} variant="contained" color="secondary">
+              Cerrar
+            </Button>
           </Box>
         </Modal>
       </Box>

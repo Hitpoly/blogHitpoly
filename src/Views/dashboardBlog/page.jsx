@@ -5,6 +5,8 @@ import CreateArticle from "./components/CreateArticle";
 import ArticleList from "./components/ArticleList";
 import { Routes, Route } from "react-router-dom";
 
+
+
 const Home = () => (
   <Box
     sx={{
@@ -41,6 +43,7 @@ const DashboardBlog = () => {
           <Route path="/" element={<Home />} />
           <Route path="articulos" element={<ArticleList />} />
           <Route path="crear-articulo" element={<CreateArticle />} />
+
         </Routes>
       </Box>
     </Box>

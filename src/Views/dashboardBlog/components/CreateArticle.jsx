@@ -1,27 +1,101 @@
 import React, { useState } from "react";
-import { Box, Button, TextField, Typography, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import { Box, Button, TextField, Typography, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { createPost } from "./../../../services/postService" 
+import axios from "axios";
 
 const CreateArticle = () => {
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [image, setImage] = useState(null);
-  const [area, setArea] = useState(""); 
+  const [imageUrl, setImageUrl] = useState(""); // URL de la imagen de portada
+  const [area, setArea] = useState("");
+  const [contentBlocks, setContentBlocks] = useState([]); // Arreglo para los bloques de contenido (texto o imagen)
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setImage(file);
+  // Función para subir una imagen a Cloudinary
+  const uploadImageToCloudinary = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      setUploadingImage(true);
+
+      const response = await axios.post(
+        "https://apiblog.hitpoly.com/ajax/cloudinary.php",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      // const response = await axios.post(
+      //   "http://localhost/bloghitpoly/ajax/cloudinary.php",
+      //   formData,
+      //   {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //   }
+      // );
+
+      if (response.data.url) {
+        return response.data.url;
+      } else {
+        throw new Error("Error obteniendo la URL de la imagen");
+      }
+    } catch (error) {
+      console.error("Error al subir la imagen:", error);
+      setError("Error al subir la imagen");
+      return null;
+    } finally {
+      setUploadingImage(false);
     }
   };
 
+  // Función para agregar un bloque de texto
+  const addTextBlock = () => {
+    setContentBlocks([...contentBlocks, { type: "text", content: "", textType: "paragraph" }]);
+  };
+
+  // Función para agregar un bloque de imagen
+  const addImageBlock = () => {
+    setContentBlocks([...contentBlocks, { type: "image", url: "" }]);
+  };
+
+  // Función para manejar el cambio en los bloques de texto
+  const handleTextChange = (index, newText) => {
+    const updatedBlocks = [...contentBlocks];
+    updatedBlocks[index].content = newText;
+    setContentBlocks(updatedBlocks);
+  };
+
+  // Función para manejar el cambio del tipo de texto (Subtítulo / Párrafo)
+  const handleTextTypeChange = (index, newType) => {
+    const updatedBlocks = [...contentBlocks];
+    updatedBlocks[index].textType = newType;
+    setContentBlocks(updatedBlocks);
+  };
+
+  // Función para manejar el cambio en las URLs de las imágenes
+  const handleImageUpload = async (index, event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const uploadedUrl = await uploadImageToCloudinary(file);
+      if (uploadedUrl) {
+        const updatedBlocks = [...contentBlocks];
+        updatedBlocks[index].url = uploadedUrl;
+        setContentBlocks(updatedBlocks);
+      }
+    }
+  };
+
+  // Enviar artículo al backend
   const handleSubmit = async () => {
-    if (!title || !description || !area) {
-      setError("Por favor, completa todos los campos.");
+    if (!title || !area || !imageUrl || contentBlocks.length === 0) {
+      setError("Por favor, completa todos los campos y añade contenido.");
       return;
     }
 
@@ -30,19 +104,33 @@ const CreateArticle = () => {
     setSuccess(false);
 
     try {
-      // Suponiendo que tienes un token CSRF (este ejemplo solo pasa un string vacío)
-      const csrfToken = ""; // Aquí deberías obtener el token real desde tu backend
-      const postData = { title, content: description, area }; // Ahora incluye 'area' en los datos del artículo
+      const postData = {
+        accion:2,
+        title,
+        area,
+        image_url: imageUrl,
+        content_blocks: contentBlocks, // Enviar todos los bloques de contenido
+      };
 
-      // Llamar a la función createPost
-      const response = await createPost(postData, csrfToken, image);
-      console.log("Artículo creado:", response);
+      const response = await axios.post(
+        "https://apiblog.hitpoly.com/ajax/crearArticuloController.php",
+        postData
+      );
 
-      setSuccess(true); // Éxito en la creación
-      setTitle("");
-      setDescription("");
-      setImage(null);
-      setArea(""); // Limpiar el área después de la publicación
+      // const response = await axios.post(
+      //   "http://localhost/bloghitpoly/ajax/crearArticuloController.php",
+      //   postData
+      // );
+
+      if (response.data.resultado === "ok") {
+        setSuccess(true);
+        setTitle("");
+        setArea("");
+        setImageUrl("");
+        setContentBlocks([]);
+      } else {
+        setError("Error al crear el artículo.");
+      }
     } catch (error) {
       setError("Error al crear el artículo: " + error.message);
     } finally {
@@ -51,16 +139,7 @@ const CreateArticle = () => {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
-        maxWidth: 500,
-        margin: "0 auto",
-        p: 3,
-      }}
-    >
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2, maxWidth: 500, margin: "0 auto", p: 3 }}>
       <Typography variant="h4" component="h2" style={{ color: "#B51AD8" }}>
         Crear Nuevo Artículo
       </Typography>
@@ -72,146 +151,87 @@ const CreateArticle = () => {
         fullWidth
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        slotProps={{
-          input: {
-            style: {
-              backgroundColor: "#ffffff", // Fondo blanco para el campo de texto
-              color: "#000000", // Texto oscuro
-            },
-          },
-          label: {
-            style: {
-              color: "#B51AD8", // Color para el label
-            },
-          },
-        }}
       />
 
-      <TextField
-        label="Descripción"
-        variant="outlined"
-        color="secondary"
-        fullWidth
-        multiline
-        rows={4}
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        slotProps={{
-          input: {
-            style: {
-              backgroundColor: "#ffffff", // Fondo blanco para el campo de texto
-              color: "#000000", // Texto oscuro
-            },
-          },
-          label: {
-            style: {
-              color: "#B51AD8", // Color para el label
-            },
-          },
-        }}
-      />
-
-      {/* Agregar un selector para elegir el área */}
+      {/* Seleccionar área */}
       <FormControl fullWidth>
-        <InputLabel id="area-label" style={{ color: "#B51AD8" }}>Área</InputLabel>
-        <Select
-          labelId="area-label"
-          value={area}
-          onChange={(e) => setArea(e.target.value)}
-          label="Área"
-          sx={{
-            backgroundColor: "#ffffff",
-            color: "#000000",
-            "& .MuiInputBase-input": {
-              backgroundColor: "#ffffff",
-            },
-          }}
-        >
-          <MenuItem value="articulos_importantes">Articulos importantes</MenuItem>
+        <InputLabel id="area-label" style={{ color: "#B51AD8" }}>
+          Área
+        </InputLabel>
+        <Select labelId="area-label" value={area} onChange={(e) => setArea(e.target.value)} label="Área">
+          <MenuItem value="articulos_importantes">Artículos importantes</MenuItem>
           <MenuItem value="marketing">Marketing</MenuItem>
-          <MenuItem value="area_comercial">Area Comercial</MenuItem>
+          <MenuItem value="ventas">Área Comercial</MenuItem>
           <MenuItem value="tecnologia">Tecnología</MenuItem>
-          {/* Puedes agregar más áreas según tus necesidades */}
         </Select>
       </FormControl>
 
-      <Button
-        component="label"
-        className="hover-button"
-        sx={{
-          padding: "10px 20px",
-          backgroundColor: "#ECEAEF",
-          color: "#B51AD8",
-          borderRadius: "10px",
-          fontWeight: "bold",
-          fontSize: "16px",
-          boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.1)",
-          transition: "background-color 0.3s ease, color 0.3s ease, transform 0.3s ease",
-          "&:hover": {
-            backgroundColor: "#7311bb",
-            color: "#ECEAEF",
-            transform: "translateY(-2px)",
-          },
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        Seleccionar Imagen
-        <input type="file" hidden onChange={handleImageUpload} />
-        <ArrowForwardIcon
-          sx={{
-            fontSize: "20px",
-            marginLeft: "8px",
-            transform: "rotate(320deg)",
-            transition: "color 0.1s ease",
-            color: "inherit",
-          }}
-        />
+      {/* Cargar imagen de portada */}
+      <Button component="label" sx={{ backgroundColor: "#ECEAEF", color: "#B51AD8", fontWeight: "bold" }}>
+        Seleccionar Imagen de Portada
+        <input type="file" hidden onChange={async (e) => {
+          const file = e.target.files[0];
+          const uploadedUrl = await uploadImageToCloudinary(file);
+          if (uploadedUrl) setImageUrl(uploadedUrl);
+        }} />
+        <ArrowForwardIcon sx={{ marginLeft: "8px" }} />
       </Button>
 
-      {image && (
-        <Typography variant="body1" color="black">
-          Imagen seleccionada: {image.name}
-        </Typography>
-      )}
+      {/* Contenido del artículo: bloques de texto y de imagen */}
+      <Box>
+        {contentBlocks.map((block, index) => (
+          <Box key={index}>
+            {block.type === "text" && (
+              <Box>
+                <FormControl fullWidth>
+                  <InputLabel id={`text-type-label-${index}`} style={{ color: "#B51AD8" }}>
+                    Tipo de Bloque
+                  </InputLabel>
+                  <Select
+                    labelId={`text-type-label-${index}`}
+                    value={block.textType}
+                    onChange={(e) => handleTextTypeChange(index, e.target.value)}
+                    label="Tipo de Bloque"
+                  >
+                    <MenuItem value="paragraph">Párrafo</MenuItem>
+                    <MenuItem value="subtitle">Subtítulo</MenuItem>
+                  </Select>
+                </FormControl>
 
-      {error && (
-        <Typography variant="body2" color="error">
-          {error}
-        </Typography>
-      )}
+                <TextField
+                  label={`${block.textType === "subtitle" ? "Subtítulo" : "Párrafo"} ${index + 1}`}
+                  variant="outlined"
+                  color="secondary"
+                  fullWidth
+                  multiline
+                  rows={4}
+                  value={block.content}
+                  onChange={(e) => handleTextChange(index, e.target.value)}
+                />
+              </Box>
+            )}
 
-      {success && (
-        <Typography variant="body2" color="primary">
-          Artículo publicado con éxito.
-        </Typography>
-      )}
+            {block.type === "image" && (
+              <Button component="label" sx={{ backgroundColor: "#ECEAEF", color: "#B51AD8", fontWeight: "bold" }}>
+                Seleccionar Imagen
+                <input type="file" hidden onChange={(e) => handleImageUpload(index, e)} />
+                <ArrowForwardIcon sx={{ marginLeft: "8px" }} />
+              </Button>
+            )}
+          </Box>
+        ))}
+      </Box>
 
-      <Button
-        component="label"
-        className="hover-button"
-        onClick={handleSubmit}
-        disabled={loading}
-        sx={{
-          padding: "10px 20px",
-          backgroundColor: "#ECEAEF",
-          color: "#B51AD8",
-          borderRadius: "10px",
-          fontWeight: "bold",
-          fontSize: "16px",
-          boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.1)",
-          transition: "background-color 0.3s ease, color 0.3s ease, transform 0.3s ease",
-          "&:hover": {
-            backgroundColor: "#7311bb",
-            color: "#ECEAEF",
-            transform: "translateY(-2px)",
-          },
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
+      {/* Botones para agregar bloques de texto o imagen */}
+      <Button onClick={addTextBlock} sx={{ backgroundColor: "#ECEAEF", color: "#B51AD8" }}>Añadir Subtítulo/Párrafo</Button>
+      <Button onClick={addImageBlock} sx={{ backgroundColor: "#ECEAEF", color: "#B51AD8" }}>Añadir Imagen</Button>
+
+      {uploadingImage && <Typography color="primary">Subiendo imagen...</Typography>}
+
+      {error && <Typography variant="body2" color="error">{error}</Typography>}
+      {success && <Typography variant="body2" color="primary">Artículo publicado con éxito.</Typography>}
+
+      <Button onClick={handleSubmit} disabled={loading || uploadingImage} sx={{ backgroundColor: "#ECEAEF", color: "#B51AD8" }}>
         {loading ? "Publicando..." : "Publicar Artículo"}
       </Button>
     </Box>

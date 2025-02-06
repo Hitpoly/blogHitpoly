@@ -1,36 +1,56 @@
-import { Box } from "@mui/material";
-import React from "react";
-import AppIndexSectionArticle from "./../HomeArticle/components/AppIndexSectionArticle";
-import AppCustomComponent from "./../HomeArticle/components/AppCustomComponent";
-import AppArticleIndex from "./../HomeArticle/components/AppArticleIndex";
-import AppBenefitsIndex from "./../HomeArticle/components/AppBenefitsIndex";
-import AppArticleContent from "./../HomeArticle/components/AppArticleContent";
-import AppSocialAdvantages from "./../HomeArticle/components/AppSocialAdvantages";
-import AppCustomCardList from "./../HomeArticle/components/AppCustomCardList";
-import AppInfoCards from "./../HomeArticle/components/AppInfoCards";
-import AppArticleCard from "./../HomeArticle/components/AppArticleCard";
-import VideosDestacados from "./../Home/components/videosDestacados/VideosMasVistos";
-
+import React, { useEffect, useState } from "react";
+import { Box, Container, CircularProgress, Typography } from "@mui/material";
+import IndexSection from "../components/article/IndexSection";
+import DownloadIcon from "@mui/icons-material/Download";
 import Footer from "../components/footer/page";
+import { useParams } from "react-router-dom";
 
 const HomeArticle = () => {
+  const { id } = useParams();
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetch(`https://apiblog.hitpoly.com/ajax/getArticuloController.php`)
+      .then((response) => response.json())
+      .then((data) => {
+        setArticles(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+  console.log("ARTICULOS:", articles);
+
+  const handleButtonClick = () => {
+    alert("¡Guía descargada!");
+  };
+
+  // Verificar si el artículo está disponible
+
+  if (loading) return <Typography variant="h6">Cargando...</Typography>;
+  if (error) return <Typography variant="h6" color="error">{error}</Typography>;
+
+  const article = articles.find((art) => art.article_id == id); // Buscar por el ID del artículo
+  if (!article) return <Typography variant="h6" color="error">Artículo no encontrado</Typography>;
+
   return (
     <Box>
-      <AppIndexSectionArticle />
-      <AppCustomComponent />
-      <AppArticleIndex />
-      <AppBenefitsIndex />
-      <AppArticleContent />
-      <AppSocialAdvantages />
-      <AppInfoCards />
-      <AppCustomCardList />
-      <AppArticleCard />
-      <Box sx={{  width: "100%" }}>
-        <Box sx={{ margin: { xs: "20px", md: "0px 200px" } }}>
-          <VideosDestacados />
-        </Box>
-      </Box>
-
+     <IndexSection
+      breadcrumb="Home > Articles"
+      title={article.title}
+      area={article.area}
+      date={article.fecha_actual}
+      buttonText="Read more"
+      buttonIcon={<span>📖</span>} // Puedes poner el icono que desees
+      onButtonClick={() => alert("Button clicked!")}
+      backgroundImage={article.post_image_url}
+      contentText={article.content_blocks}
+      images={article.images} 
+    />
       <Footer />
     </Box>
   );

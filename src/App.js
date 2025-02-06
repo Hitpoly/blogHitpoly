@@ -19,14 +19,12 @@ function App() {
   return (
     <Box>
       {/* Solo mostrar el menú de navegación si no estamos en login ni en dashboardBlog */}
-      {!hideMenu && <MenuDeNavegacion />}
+       {!hideMenu && <MenuDeNavegacion />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboardBlog/*" element={<DashboardBlog />} />
-        <Route path="/homeArticle" element={<HomeArticle />} />   
-        <Route path="/article/:id" element={<ArticleDetail />} />
- 
+        <Route path="/article/:id" element={<ArticleDetail />} /> 
       </Routes>
     </Box>
   );

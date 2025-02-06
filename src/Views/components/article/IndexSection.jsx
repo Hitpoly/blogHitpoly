@@ -1,21 +1,22 @@
 import React from "react";
 import { Box, Typography, Button, Container, Grid } from "@mui/material";
-import DownloadIcon from "@mui/icons-material/Download";
+import AppCustomComponent from "../../HomeArticle/components/AppCustomComponent";
 
-const IndexSection = ({ 
+const IndexSection= ({ 
   breadcrumb, 
   title, 
-  description, 
+  area,
+  date, 
   buttonText, 
   buttonIcon, 
   onButtonClick, 
   backgroundImage, 
-  contentText 
+  contentText  
 }) => {
   return (
     <Container maxWidth="lg" sx={{ marginTop: 4 }}>
       {/* Breadcrumb */}
-      <Box>
+      <Box sx={{ textAlign: 'center', marginBottom: 3 }}>
         <Typography variant="body2" color="text.secondary" gutterBottom>
           {breadcrumb}
         </Typography>
@@ -29,7 +30,7 @@ const IndexSection = ({
             {title}
           </Typography>
           <Typography variant="body1" color="text.primary" paragraph>
-            {description}
+          <strong>{area}</strong> - {date}
           </Typography>
           <Button
             variant="contained"
@@ -57,11 +58,22 @@ const IndexSection = ({
         </Grid>
       </Grid>
 
+      <AppCustomComponent />
+
       {/* Texto adicional */}
       <Box sx={{ padding: "50px" }}>
-        <Typography variant="body1" color="text.secondary">
-          {contentText}
-        </Typography>
+        {contentText && contentText.map((block, index) => (
+          <Box key={index} sx={{ marginBottom: 4 }}>
+            {/* Título de la sección */}
+            <Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: 2 }}>
+              {block.title}
+            </Typography>
+            {/* Contenido de la sección */}
+            <Typography variant="body1" color="text.secondary">
+              {block.content}
+            </Typography>
+          </Box>
+        ))}
       </Box>
     </Container>
   );

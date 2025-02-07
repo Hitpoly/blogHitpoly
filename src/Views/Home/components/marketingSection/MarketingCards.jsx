@@ -10,13 +10,26 @@ const MarketingCards = () => {
   const [salesArticles, setSalesArticles] = useState([]);
 
   useEffect(() => {
-    setSalesArticles(articlesData);
+    // fetch(`http://localhost/bloghitpoly/ajax/getArticuloController.php`)
+    fetch(`https://apiblog.hitpoly.com/ajax/getArticuloController.php`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        const marquetingArticles = data.filter(
+          (article) => article.area === "marketing"
+        );
+        setSalesArticles(marquetingArticles);
+      })
+      .catch((error) =>
+        console.error("Error al obtener los artículos:", error)
+      );
   }, []);
 
   // Datos para la tarjeta de plantilla gratuita
   const freeRecursoData = {
     title: "Plantilla Gratuita para tu Estrategia de Marketing",
-    description: "Descarga esta plantilla para estructurar tu estrategia de marketing de manera efectiva.",
+    description:
+      "Descarga esta plantilla para estructurar tu estrategia de marketing de manera efectiva.",
     imageUrl: "/images/estrategiaDeMarketing.jpg", // Asegúrate de tener una URL válida de la imagen
     buttonText: "Descargar ahora",
   };
@@ -65,7 +78,10 @@ const MarketingCards = () => {
             }}
           />
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Link to="/articulos-ventas" style={{ textDecoration: "none" }}>
+            <Link
+              to="/articulos-ventas"
+              style={{ textDecoration: "none" }}
+            >
               <Typography
                 variant="subtitle1"
                 sx={{
@@ -92,10 +108,22 @@ const MarketingCards = () => {
           sx={{ flexDirection: "row", margin: 0, padding: 0 }}
         >
           {/* Las 4 cartas de los artículos */}
-          <Grid item xs={12} md={9}>
-            <Grid container spacing={1}>
+          <Grid
+            item
+            xs={12}
+            md={9}
+          >
+            <Grid
+              container
+              spacing={1}
+            >
               {salesArticles.map((article) => (
-                <Grid item xs={12} md={6} key={article.id}>
+                <Grid
+                  item
+                  xs={12}
+                  md={6}
+                  key={article.id}
+                >
                   <ArticleCard article={article} />
                 </Grid>
               ))}
@@ -103,7 +131,11 @@ const MarketingCards = () => {
           </Grid>
 
           {/* Carta sola con la plantilla gratuita */}
-          <Grid item xs={12} md={3}>
+          <Grid
+            item
+            xs={12}
+            md={3}
+          >
             <FreeRecursoCard
               title={freeRecursoData.title}
               description={freeRecursoData.description}

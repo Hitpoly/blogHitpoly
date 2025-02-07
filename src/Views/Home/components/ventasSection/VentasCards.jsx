@@ -9,9 +9,20 @@ import articlesData from "./ventasSection.json"; // Datos de los artículos rela
 const VentasCards = () => {
   const [salesArticles, setSalesArticles] = useState([]);
 
-  // Cargar los artículos cuando el componente se monta
   useEffect(() => {
-    setSalesArticles(articlesData);
+    // fetch(`http://localhost/bloghitpoly/ajax/getArticuloController.php`)
+    fetch(`https://apiblog.hitpoly.com/ajax/getArticuloController.php`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        const marquetingArticles = data.filter(
+          (article) => article.area === "ventas"
+        );
+        setSalesArticles(marquetingArticles);
+      })
+      .catch((error) =>
+        console.error("Error al obtener los artículos:", error)
+      );
   }, []);
 
   // Datos para la tarjeta de plantilla gratuita
@@ -22,7 +33,6 @@ const VentasCards = () => {
     imageUrl: "/images/estrategiaDeVentas.jpg", // Asegúrate de tener una URL válida de la imagen
     buttonText: "Descargar ahora",
   };
-  
 
   return (
     <Box>
@@ -68,7 +78,10 @@ const VentasCards = () => {
             }}
           />
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Link to="/articulos-ventas" style={{ textDecoration: "none" }}>
+            <Link
+              to="/articulos-ventas"
+              style={{ textDecoration: "none" }}
+            >
               <Typography
                 variant="subtitle1"
                 sx={{
@@ -95,7 +108,11 @@ const VentasCards = () => {
           sx={{ flexDirection: "row", margin: 0, padding: 0 }}
         >
           {/* Carta sola con la plantilla gratuita */}
-          <Grid item xs={12} md={3}>
+          <Grid
+            item
+            xs={12}
+            md={3}
+          >
             <FreeRecursoCard
               title={freeRecursoData.title}
               description={freeRecursoData.description}
@@ -104,10 +121,22 @@ const VentasCards = () => {
             />
           </Grid>
           {/* Las 4 cartas de los artículos sobre ventas */}
-          <Grid item xs={12} md={9}>
-            <Grid container spacing={1}>
+          <Grid
+            item
+            xs={12}
+            md={9}
+          >
+            <Grid
+              container
+              spacing={1}
+            >
               {salesArticles.map((article) => (
-                <Grid item xs={12} md={6} key={article.id}>
+                <Grid
+                  item
+                  xs={12}
+                  md={6}
+                  key={article.id}
+                >
                   <ArticleCard article={article} />
                 </Grid>
               ))}

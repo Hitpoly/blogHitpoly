@@ -9,9 +9,20 @@ import articlesData from "./tecnologiaSection.json"; // Datos de los artículos 
 const TecnologiaCards = () => {
   const [technologyArticles, setTechnologyArticles] = useState([]);
 
-  // Cargar los artículos cuando el componente se monta
   useEffect(() => {
-    setTechnologyArticles(articlesData);
+    // fetch(`http://localhost/bloghitpoly/ajax/getArticuloController.php`)
+    fetch(`https://apiblog.hitpoly.com/ajax/getArticuloController.php`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        const marquetingArticles = data.filter(
+          (article) => article.area === "tecnologia"
+        );
+        setTechnologyArticles(marquetingArticles);
+      })
+      .catch((error) =>
+        console.error("Error al obtener los artículos:", error)
+      );
   }, []);
 
   const freeRecursoData = {
@@ -66,7 +77,10 @@ const TecnologiaCards = () => {
             }}
           />
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Link to="/articulos-tecnologia" style={{ textDecoration: "none" }}>
+            <Link
+              to="/articulos-tecnologia"
+              style={{ textDecoration: "none" }}
+            >
               <Typography
                 variant="subtitle1"
                 sx={{
@@ -93,18 +107,34 @@ const TecnologiaCards = () => {
           sx={{ flexDirection: "row", margin: 0, padding: 0 }}
         >
           {/* Las 4 cartas de los artículos sobre tecnología */}
-          <Grid item xs={12} md={9}>
-            <Grid container spacing={1}>
+          <Grid
+            item
+            xs={12}
+            md={9}
+          >
+            <Grid
+              container
+              spacing={1}
+            >
               {technologyArticles.map((article) => (
-                <Grid item xs={12} md={6} key={article.id}>
+                <Grid
+                  item
+                  xs={12}
+                  md={6}
+                  key={article.id}
+                >
                   <ArticleCard article={article} />
                 </Grid>
               ))}
             </Grid>
           </Grid>
           {/* Carta sola con la plantilla gratuita */}
-          <Grid item xs={12} md={3}>
-          <FreeRecursoCard
+          <Grid
+            item
+            xs={12}
+            md={3}
+          >
+            <FreeRecursoCard
               title={freeRecursoData.title}
               description={freeRecursoData.description}
               imageUrl={freeRecursoData.imageUrl}

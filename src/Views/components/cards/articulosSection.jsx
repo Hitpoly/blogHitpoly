@@ -31,7 +31,7 @@ const ArticleCard = ({ article }) => {
         }}
       >
         <img
-          src={article.image}
+          src={article.post_image_url}
           alt={article.title}
           style={{
             width: "100%",
@@ -46,8 +46,11 @@ const ArticleCard = ({ article }) => {
 
       {/* Contenido */}
       <CardContent sx={{ flexGrow: 1, textAlign: "left" }}>
-        <Typography variant="body2" sx={{ color: "#B51AD8" }}>
-          {article.date}
+        <Typography
+          variant="body2"
+          sx={{ color: "#B51AD8" }}
+        >
+          {article.fecha_actual}
         </Typography>
         <Typography
           variant="h6"
@@ -66,11 +69,17 @@ const ArticleCard = ({ article }) => {
             },
           }}
         >
-          <Link to={article.linkArticle} style={{ textDecoration: "none", color: "inherit" }}>
+          <Link
+            to={article.linkArticle}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
             {article.title}
           </Link>
         </Typography>
-        <Typography variant="body2" sx={{ color: "#A0A0A0", fontSize: "1rem" }}>
+        <Typography
+          variant="body2"
+          sx={{ color: "#A0A0A0", fontSize: "1rem" }}
+        >
           {article.description}
         </Typography>
       </CardContent>
@@ -87,11 +96,14 @@ const ArticleCard = ({ article }) => {
           alignItems: "center",
         }}
       >
-        <Link to={article.linkArticle} style={{ textDecoration: "none" }}>
+        <Link
+          to={article.linkArticle}
+          style={{ textDecoration: "none" }}
+        >
           <Box
             sx={{
               backgroundColor: "#F21C63",
-              borderRadius: {xs: "25px", md: "50%"},
+              borderRadius: { xs: "25px", md: "50%" },
               padding: { xs: "10px 15px", md: "3px" },
               width: { xs: "auto", md: "auto" },
               display: "flex",
@@ -106,7 +118,9 @@ const ArticleCard = ({ article }) => {
               },
             }}
           >
-            <ArrowOutwardIcon sx={{ color: "#fff", fontSize: { xs: "20px", md: "inherit" } }} />
+            <ArrowOutwardIcon
+              sx={{ color: "#fff", fontSize: { xs: "20px", md: "inherit" } }}
+            />
             {/* Texto adicional solo para móviles */}
             <Typography
               sx={{

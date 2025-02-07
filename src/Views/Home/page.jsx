@@ -1,18 +1,23 @@
-import React from "react";
+import { Box } from "@mui/material";
+import React, { useEffect } from "react";
+import { verificarSesion } from "../../services/verificarSesion"; // Importar verificarSesion
+import Footer from "../components/footer/page";
+import MarketingCards from "./components/marketingSection/MarketingCards";
+import Newsletter from "./components/newsletter/captadorCorreo";
+import OportunidadesImportantes from "./components/oportunidadesImportantes/oportunidadesDestacadas";
 import Portada from "./components/portada/portada";
 import RecursosMasUsados from "./components/recursosMasUsados/recursosMasUsados";
-import Newsletter from "./components/newsletter/captadorCorreo";
-import MarketingCards from "./components/marketingSection/MarketingCards";
+import TecnologiaCards from "./components/tecnologiaSection/tecnologiaCards";
 import VentasCards from "./components/ventasSection/VentasCards";
 import VideosDestacados from "./components/videosDestacados/VideosMasVistos";
-import TecnologiaCards from "./components/tecnologiaSection/tecnologiaCards";
-import OportunidadesImportantes from "./components/oportunidadesImportantes/oportunidadesDestacadas";
-import Footer from "../components/footer/page";
-import { Box } from "@mui/material";
 
 function Home() {
+  useEffect(() => {
+    verificarSesion(); // Verificar sesión al montar el componente
+  }, []);
+
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: "20px", }}>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
       <Portada />
       <RecursosMasUsados />
       <Newsletter />
@@ -21,9 +26,9 @@ function Home() {
           padding: {
             xs: "10px 30px",
             md: "10px 100px",
-            display: "flex",
-            flexDirection: "column",
           },
+          display: "flex",
+          flexDirection: "column",
         }}
       >
         <MarketingCards />
@@ -39,15 +44,15 @@ function Home() {
           padding: {
             xs: "10px 30px",
             md: "10px 100px",
-            display: "flex",
-            flexDirection: "column",
           },
+          display: "flex",
+          flexDirection: "column",
         }}
       >
         <TecnologiaCards />
       </Box>
       <OportunidadesImportantes />
-      <Footer/>
+      <Footer />
     </Box>
   );
 }

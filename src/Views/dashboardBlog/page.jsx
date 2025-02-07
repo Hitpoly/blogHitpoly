@@ -1,11 +1,10 @@
-import React from "react";
-import Sidebar from "./components/sidebar";
 import { Box } from "@mui/material";
-import CreateArticle from "./components/CreateArticle";
+import React, { useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
+import { verificarSesion } from "../../services/verificarSesion"; // Importar verificarSesion
 import ArticleList from "./components/ArticleList";
-import { Routes, Route } from "react-router-dom";
-
-
+import CreateArticle from "./components/CreateArticle";
+import Sidebar from "./components/sidebar";
 
 const Home = () => (
   <Box
@@ -28,6 +27,10 @@ const Home = () => (
 );
 
 const DashboardBlog = () => {
+  useEffect(() => {
+    verificarSesion(); // Verificar sesión al montar el componente
+  }, []);
+
   return (
     <Box display="flex" height="100vh">
       <Sidebar />
@@ -43,7 +46,6 @@ const DashboardBlog = () => {
           <Route path="/" element={<Home />} />
           <Route path="articulos" element={<ArticleList />} />
           <Route path="crear-articulo" element={<CreateArticle />} />
-
         </Routes>
       </Box>
     </Box>

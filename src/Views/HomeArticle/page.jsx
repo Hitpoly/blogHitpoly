@@ -1,9 +1,9 @@
+import { Box, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Box, Container, CircularProgress, Typography } from "@mui/material";
-import IndexSection from "../components/article/IndexSection";
-import DownloadIcon from "@mui/icons-material/Download";
-import Footer from "../components/footer/page";
 import { useParams } from "react-router-dom";
+import { verificarSesion } from "../../services/verificarSesion"; // Importar verificarSesion
+import IndexSection from "../components/article/IndexSection";
+import Footer from "../components/footer/page";
 
 const HomeArticle = () => {
   const { id } = useParams();
@@ -12,6 +12,7 @@ const HomeArticle = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    verificarSesion(); // Verificar sesión al montar el componente
     fetch(`https://apiblog.hitpoly.com/ajax/getArticuloController.php`)
       .then((response) => response.json())
       .then((data) => {
@@ -39,18 +40,18 @@ const HomeArticle = () => {
 
   return (
     <Box>
-     <IndexSection
-      breadcrumb="Home > Articles"
-      title={article.title}
-      area={article.area}
-      date={article.fecha_actual}
-      buttonText="Read more"
-      buttonIcon={<span>📖</span>} // Puedes poner el icono que desees
-      onButtonClick={() => alert("Button clicked!")}
-      backgroundImage={article.post_image_url}
-      contentText={article.content_blocks}
-      images={article.images} 
-    />
+      <IndexSection
+        breadcrumb="Home > Articles"
+        title={article.title}
+        area={article.area}
+        date={article.fecha_actual}
+        buttonText="Read more"
+        buttonIcon={<span>📖</span>} // Puedes poner el icono que desees
+        onButtonClick={() => alert("Button clicked!")}
+        backgroundImage={article.post_image_url}
+        contentText={article.content_blocks}
+        images={article.images}
+      />
       <Footer />
     </Box>
   );

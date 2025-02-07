@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-import { Box, Button, TextField, Typography, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import axios from "axios";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CreateArticle = () => {
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [imageUrl, setImageUrl] = useState(""); // URL de la imagen de portada
   const [area, setArea] = useState("");
@@ -92,6 +94,17 @@ const CreateArticle = () => {
     }
   };
 
+  // Añadir función para cancelar edición
+  const handleCancel = () => {
+    setTitle("");
+    setImageUrl("");
+    setArea("");
+    setContentBlocks([]);
+    setError(null);
+    setSuccess(false);
+    navigate("/dashboardBlog");
+  };
+
   // Enviar artículo al backend
   const handleSubmit = async () => {
     if (!title || !area || !imageUrl || contentBlocks.length === 0) {
@@ -105,7 +118,7 @@ const CreateArticle = () => {
 
     try {
       const postData = {
-        accion:2,
+        accion: 2,
         title,
         area,
         image_url: imageUrl,
@@ -225,6 +238,7 @@ const CreateArticle = () => {
       {/* Botones para agregar bloques de texto o imagen */}
       <Button onClick={addTextBlock} sx={{ backgroundColor: "#ECEAEF", color: "#B51AD8" }}>Añadir Subtítulo/Párrafo</Button>
       <Button onClick={addImageBlock} sx={{ backgroundColor: "#ECEAEF", color: "#B51AD8" }}>Añadir Imagen</Button>
+      <button onClick={handleCancel}>Cancelar</button>
 
       {uploadingImage && <Typography color="primary">Subiendo imagen...</Typography>}
 

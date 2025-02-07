@@ -1,7 +1,7 @@
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const CreateArticle = () => {
@@ -14,6 +14,7 @@ const CreateArticle = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const cancelTokenSource = useRef(null);
 
   // Función para subir una imagen a Cloudinary
   const uploadImageToCloudinary = async (file) => {
@@ -22,6 +23,8 @@ const CreateArticle = () => {
 
     try {
       setUploadingImage(true);
+      const source = axios.CancelToken.source();
+      cancelTokenSource.current = source;
 
       const response = await axios.post(
         "https://apiblog.hitpoly.com/ajax/cloudinary.php",
@@ -30,18 +33,9 @@ const CreateArticle = () => {
           headers: {
             "Content-Type": "multipart/form-data",
           },
+          cancelToken: source.token,
         }
       );
-
-      // const response = await axios.post(
-      //   "http://localhost/bloghitpoly/ajax/cloudinary.php",
-      //   formData,
-      //   {
-      //     headers: {
-      //       "Content-Type": "multipart/form-data",
-      //     },
-      //   }
-      // );
 
       if (response.data.url) {
         return response.data.url;
@@ -49,11 +43,16 @@ const CreateArticle = () => {
         throw new Error("Error obteniendo la URL de la imagen");
       }
     } catch (error) {
-      console.error("Error al subir la imagen:", error);
-      setError("Error al subir la imagen");
+      if (axios.isCancel(error)) {
+        console.log("Petición cancelada:", error.message);
+      } else {
+        console.error("Error al subir la imagen:", error);
+        setError("Error al subir la imagen");
+      }
       return null;
     } finally {
       setUploadingImage(false);
+      cancelTokenSource.current = null;
     }
   };
 
@@ -94,15 +93,11 @@ const CreateArticle = () => {
     }
   };
 
-  // Añadir función para cancelar edición
+  // Modificar la función de cancelar: solo se cancela la subida de la imagen
   const handleCancel = () => {
-    setTitle("");
-    setImageUrl("");
-    setArea("");
-    setContentBlocks([]);
-    setError(null);
-    setSuccess(false);
-    navigate("/dashboardBlog");
+    if (uploadingImage && cancelTokenSource.current) {
+      cancelTokenSource.current.cancel("Subida de imagen cancelada por el usuario");
+    }
   };
 
   // Enviar artículo al backend
@@ -129,11 +124,6 @@ const CreateArticle = () => {
         "https://apiblog.hitpoly.com/ajax/crearArticuloController.php",
         postData
       );
-
-      // const response = await axios.post(
-      //   "http://localhost/bloghitpoly/ajax/crearArticuloController.php",
-      //   postData
-      // );
 
       if (response.data.resultado === "ok") {
         setSuccess(true);

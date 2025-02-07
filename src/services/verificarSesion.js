@@ -19,8 +19,8 @@ export async function verificarSesion() {
 
         const data = await response.json();
 
-        // Si los datos están vacíos o no existen la sesión se redirige al login
-        if (!data || Object.keys(data).length === 0) {
+        // Cambio: redirige al login si el status no es success
+        if (!data || data.status !== "success") {
             window.location.href = "/login";
             return;
         }

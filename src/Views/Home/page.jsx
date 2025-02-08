@@ -1,6 +1,5 @@
 import { Box } from "@mui/material";
-import React, { useEffect } from "react";
-import { verificarSesion } from "../../services/verificarSesion"; // Importar verificarSesion
+import React from "react";
 import Footer from "../components/footer/page";
 import MarketingCards from "./components/marketingSection/MarketingCards";
 import Newsletter from "./components/newsletter/captadorCorreo";
@@ -12,9 +11,9 @@ import VentasCards from "./components/ventasSection/VentasCards";
 import VideosDestacados from "./components/videosDestacados/VideosMasVistos";
 
 function Home() {
-  useEffect(() => {
-    verificarSesion(); // Verificar sesión al montar el componente
-  }, []);
+  // useEffect(() => {
+  //   verificarSesion(); // Verificar sesión al montar el componente
+  // }, []);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>

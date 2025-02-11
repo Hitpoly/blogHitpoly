@@ -9,6 +9,7 @@ const CreateArticle = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [imageUrl, setImageUrl] = useState(""); // URL de la imagen de portada
+  const [additionalImages, setAdditionalImages] = useState([]); // Array para imágenes adicionales
   const [area, setArea] = useState("");
   const [contentBlocks, setContentBlocks] = useState([]); // Arreglo para los bloques de contenido (texto o imagen)
   const [uploadingImage, setUploadingImage] = useState(false);
@@ -16,6 +17,7 @@ const CreateArticle = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const cancelTokenSource = useRef(null);
+  const [author, setAuthor] = useState(""); 
 
   // Función para subir una imagen a Cloudinary
   const uploadImageToCloudinary = async (file) => {
@@ -62,10 +64,6 @@ const CreateArticle = () => {
     setContentBlocks([...contentBlocks, { type: "text", content: "", textType: "paragraph" }]);
   };
 
-  // Función para agregar un bloque de imagen
-  const addImageBlock = () => {
-    setContentBlocks([...contentBlocks, { type: "image", url: "" }]);
-  };
 
   // Función para manejar el cambio en los bloques de texto
   const handleTextChange = (index, newText) => {
@@ -81,7 +79,7 @@ const CreateArticle = () => {
     setContentBlocks(updatedBlocks);
   };
 
-  // Función para manejar el cambio en las URLs de las imágenes
+  // Función para manejar la carga de imágenes en los bloques de imagen
   const handleImageUpload = async (index, event) => {
     const file = event.target.files[0];
     if (file) {
@@ -94,17 +92,32 @@ const CreateArticle = () => {
     }
   };
 
+  // Función para manejar la carga de imágenes adicionales
+  const handleAdditionalImageUpload = async (event) => {
+    const files = event.target.files;
+    if (files.length > 0) {
+      const newImages = [];
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const uploadedUrl = await uploadImageToCloudinary(file);
+        if (uploadedUrl) {
+          newImages.push(uploadedUrl);
+        }
+      }
+      setAdditionalImages([...additionalImages, ...newImages]);
+    }
+  };
+
   // Función para eliminar un bloque de contenido
   const handleDeleteBlock = (index) => {
     const updatedBlocks = contentBlocks.filter((_, i) => i !== index);
     setContentBlocks(updatedBlocks);
   };
 
-  // Modificar la función de cancelar: solo se cancela la subida de la imagen
-  const handleCancel = () => {
-    if (uploadingImage && cancelTokenSource.current) {
-      cancelTokenSource.current.cancel("Subida de imagen cancelada por el usuario");
-    }
+  // Función para eliminar una imagen adicional
+  const handleDeleteAdditionalImage = (index) => {
+    const updatedImages = additionalImages.filter((_, i) => i !== index);
+    setAdditionalImages(updatedImages);
   };
 
   // Enviar artículo al backend
@@ -118,13 +131,20 @@ const CreateArticle = () => {
     setError(null);
     setSuccess(false);
 
+    // Dividir los bloques de contenido en subtítulos y párrafos
+    const subtitles = contentBlocks.filter(block => block.textType === "subtitle");
+    const paragraphs = contentBlocks.filter(block => block.textType === "paragraph");
+
     try {
       const postData = {
         accion: 2,
         title,
         area,
+        author,
         image_url: imageUrl,
-        content_blocks: contentBlocks, // Enviar todos los bloques de contenido
+        subtitles, // Enviar los subtítulos
+        paragraphs, // Enviar los párrafos
+        additional_images: additionalImages, // Enviar las imágenes adicionales
       };
 
       const response = await axios.post(
@@ -136,8 +156,10 @@ const CreateArticle = () => {
         setSuccess(true);
         setTitle("");
         setArea("");
+        setAuthor("");
         setImageUrl("");
         setContentBlocks([]);
+        setAdditionalImages([]);
       } else {
         setError("Error al crear el artículo.");
       }
@@ -162,6 +184,15 @@ const CreateArticle = () => {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
+         <TextField
+        label="Autor"
+        variant="outlined"
+        color="secondary"
+        fullWidth
+        value={author}
+        onChange={(e) => setAuthor(e.target.value)}
+      />
+
 
       {/* Seleccionar área */}
       <FormControl fullWidth>
@@ -243,17 +274,48 @@ const CreateArticle = () => {
       </Box>
 
       {/* Botones para agregar bloques de texto o imagen */}
-      <Button onClick={addTextBlock} sx={{ backgroundColor: "#ECEAEF", color: "#B51AD8" }}>Añadir Subtítulo/Párrafo</Button>
-      <Button onClick={addImageBlock} sx={{ backgroundColor: "#ECEAEF", color: "#B51AD8" }}>Añadir Imagen</Button>
+      <Button onClick={addTextBlock} sx={{ backgroundColor: "#ECEAEF", color: "#B51AD8", fontWeight: "bold" }}>
+        Agregar Bloque de Texto
+      </Button>
 
 
-      {uploadingImage && <Typography color="primary">Subiendo imagen...</Typography>}
+      {/* Subir imágenes adicionales */}
+      <Button component="label" sx={{ backgroundColor: "#ECEAEF", color: "#B51AD8", fontWeight: "bold" }}>
+        Cargar Imágenes al articulo
+        <input type="file" hidden multiple onChange={handleAdditionalImageUpload} />
+        <ArrowForwardIcon sx={{ marginLeft: "8px" }} />
+      </Button>
 
-      {error && <Typography variant="body2" color="error">{error}</Typography>}
-      {success && <Typography variant="body2" color="primary">Artículo publicado con éxito.</Typography>}
+      {/* Mostrar las imágenes cargadas */}
+      <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
+        {additionalImages.map((url, index) => (
+          <Box key={index}>
+            <img src={url} alt={`Imagen ${index + 1}`} style={{ width: "100px", height: "100px", objectFit: "cover" }} />
+            <Button onClick={() => handleDeleteAdditionalImage(index)} sx={{ color: "red", paddingLeft: "8px" }}>
+              <DeleteIcon />
+            </Button>
+          </Box>
+        ))}
+      </Box>
 
-      <Button onClick={handleSubmit} disabled={loading || uploadingImage} sx={{ backgroundColor: "#ECEAEF", color: "#B51AD8" }}>
-        {loading ? "Publicando..." : "Publicar Artículo"}
+      {/* Mostrar el mensaje de error */}
+      {error && <Typography color="red">{error}</Typography>}
+
+      {/* Mostrar el mensaje de éxito */}
+      {success && <Typography color="green">Artículo creado exitosamente!</Typography>}
+
+      {/* Botón para enviar */}
+      <Button
+        onClick={handleSubmit}
+        sx={{
+          backgroundColor: "#B51AD8",
+          color: "white",
+          fontWeight: "bold",
+          marginTop: 3,
+        }}
+        disabled={loading}
+      >
+        {loading ? "Cargando..." : "Crear Artículo"}
       </Button>
     </Box>
   );

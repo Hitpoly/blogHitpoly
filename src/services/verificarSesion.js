@@ -1,34 +1,23 @@
 export async function verificarSesion() {
     try {
-        const response = await fetch('https://apiblog.hitpoly.com/ajax/usuarioController.php', {
-            method: 'POST',
+        const response = await fetch("https://apiblog.hitpoly.com/ajax/usuarioController.php", {
+            method: "POST",
+            credentials: "include",  // Asegúrate de incluir las cookies
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                funcion: "verificar_sesion",
-                id: 5 // ejemplo de id
-            })
+            body: JSON.stringify({ funcion: "verificar_sesion" })
         });
 
-        // Si la respuesta no es 200 se redirige al login
-        if (!response.ok) {
-            window.location.href = "/login";
-            return;
-        }
-
         const data = await response.json();
+        console.log(data); // Verifica la respuesta completa
 
-        // Cambio: redirige al login si el status no es success
-        if (!data || data.status !== "success") {
-            window.location.href = "/login";
-            return;
+        if (data.status === "error") {
+            console.error("No session found");
+        } else {
+            console.log("Sesion encontrada", data);
         }
-
-        // Devuelve los datos del usuario si todo salió bien
-        return data;
     } catch (error) {
         console.error("Error al verificar sesión:", error);
-        window.location.href = "/login";
     }
 }

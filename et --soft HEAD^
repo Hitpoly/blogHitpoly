@@ -1,0 +1,141 @@
+[33mcommit 87515288bf4a6737cca73caf49ddf03965998146[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: CARLOSMARES <46010587+CARLOSMARES@users.noreply.github.com>
+Date:   Thu Feb 6 22:15:55 2025 -0600
+
+    Refactor image upload handling in CreateArticle component and update session verification logic
+
+[33mcommit 480bf2aa6b9eece0f5d324f59156b3ffa53d8ea0[m
+Merge: e357700 c5a4da7
+Author: CARLOSMARES <46010587+CARLOSMARES@users.noreply.github.com>
+Date:   Thu Feb 6 22:04:23 2025 -0600
+
+    Merge branch 'main' of https://github.com/Hitpoly/blogHitpoly
+
+[33mcommit e357700ebd6351dbead74b4a56d466f48863c265[m
+Author: CARLOSMARES <46010587+CARLOSMARES@users.noreply.github.com>
+Date:   Thu Feb 6 22:04:01 2025 -0600
+
+    Implement session verification across multiple components and add verificarSesion service
+
+[33mcommit c5a4da77f57579accfd7c97e72601573682a7e65[m
+Author: Elmer-Coro <corohuamanelmer@gmail.com>
+Date:   Thu Feb 6 22:42:10 2025 -0500
+
+    filter articles
+
+[33mcommit af19da4844c279aedff0cbe4d65710d1d8059518[m
+Author: CARLOSMARES <46010587+CARLOSMARES@users.noreply.github.com>
+Date:   Thu Feb 6 20:08:50 2025 -0600
+
+    Add cancel functionality to CreateArticle component
+
+[33mcommit f63c0b207285b591005652563232e433b60ecb10[m
+Author: CARLOSMARES <46010587+CARLOSMARES@users.noreply.github.com>
+Date:   Thu Feb 6 19:11:42 2025 -0600
+
+    Add IDE configuration files to .gitignore
+
+[33mcommit 6ff199e2bf1794a7acc2af167d565842d0aa15d3[m
+Merge: 2577f5e 1cda7eb
+Author: Nicolas Ayala <93300963+nicoayala123@users.noreply.github.com>
+Date:   Thu Feb 6 16:56:16 2025 -0500
+
+    Merge pull request #3 from nicoayala123/data_blog
+    
+    se diseña el articulo
+
+[33mcommit 1cda7eb1eabaac6385b2e66638f7cd7d37c9985f[m
+Author: nicoayala123 <nicolasayala2006@hotmail.com>
+Date:   Thu Feb 6 16:52:48 2025 -0500
+
+    se diseña el articulo
+
+[33mcommit 2577f5e4de4c101a822b8c2e10c57a1e4912da0f[m
+Author: Sergio <pitufo_bern@hotmail.com>
+Date:   Mon Feb 3 13:26:50 2025 -0300
+
+    cambios blog
+
+[33mcommit a8d4c939c304a2c647d6ea98a6d0456a47c9b74a[m[33m ([m[1;32mstep_dashboardaBlog[m[33m)[m
+Merge: bf20d5a 07ed3ba
+Author: Sergio <pitufo_bern@hotmail.com>
+Date:   Thu Jan 30 19:01:22 2025 -0300
+
+    Resuelto conflicto en App.js y package-lock.json
+
+[33mcommit bf20d5a0efbdb1f14df180c79ededce1082510ec[m
+Merge: 5091b97 833c0d3
+Author: Sergio <pitufo_bern@hotmail.com>
+Date:   Thu Jan 30 18:45:19 2025 -0300
+
+    Resolviendo conflicto en src/App.js
+
+[33mcommit 833c0d33c1170462446c2facb3bfcfac34eef941[m
+Author: hitpolyagencia <hitpoly.agencia@gmail.com>
+Date:   Wed Jan 22 19:32:25 2025 -0500
+
+    Nuevos cambios pie de pagina
+
+[33mcommit 71ae3579d20cc7800e10b8ad66f3a4dd10c382bd[m
+Author: hitpolyagencia <hitpoly.agencia@gmail.com>
+Date:   Fri Jan 17 07:53:34 2025 -0500
+
+    Analitica web
+
+[33mcommit cd9b269b6cec0dc2229be0c7678b90fa1ee32040[m
+Author: hitpolyagencia <hitpoly.agencia@gmail.com>
+Date:   Wed Jan 8 17:47:53 2025 -0500
+
+    Nueva actualización
+
+[33mcommit 07ed3baa9b434d54d59c6872714ae77c5a9c1de6[m[33m ([m[1;31morigin/step_dashboardaBlog[m[33m)[m
+Merge: b671923 eae9352
+Author: nicoayala123 <nicolasayala2006@hotmail.com>
+Date:   Tue Jan 7 21:41:59 2025 -0500
+
+    Merge branch 'main' into step_dashboardaBlog
+
+[33mcommit b671923884971de7866467f8ac7a8fa7e1510c2a[m
+Author: nicoayala123 <nicolasayala2006@hotmail.com>
+Date:   Tue Jan 7 21:33:48 2025 -0500
+
+    se agrega ajustes en package
+
+[33mcommit eae93520368ae17b4c9831fa6253a522c651242c[m
+Merge: ba0b5f5 5cdba0e
+Author: Nicolas Ayala <93300963+nicoayala123@users.noreply.github.com>
+Date:   Fri Dec 27 20:22:11 2024 -0500
+
+    Merge pull request #1 from nicoayala123/creacion-nuevo-articulo
+    
+    nuevo articulo
+
+[33mcommit 5cdba0e80107960784666314a1f72ae7f4a9dde0[m
+Author: Nicolas Ayala <nicolasayala2006@hotmail.com>
+Date:   Fri Dec 27 18:27:06 2024 -0500
+
+    nuevo articulo
+
+[33mcommit 5091b97578d636c89614a1d6c175257cec791bb0[m
+Author: Nicolas Ayala <nicolasayala2006@hotmail.com>
+Date:   Tue Dec 17 09:03:51 2024 -0500
+
+    se agrega cambios respectivos para la creacion del articulo
+
+[33mcommit ba0b5f5983597d97ec593590b0e2aed507537c21[m
+Author: hitpolyagencia <hitpoly.agencia@gmail.com>
+Date:   Mon Dec 9 08:51:13 2024 -0500
+
+    Nuevo comit
+
+[33mcommit c2254aeded89221a066f43a88f1d3971352b55be[m
+Author: hitpolyagencia <hitpoly.agencia@gmail.com>
+Date:   Sun Dec 8 18:51:53 2024 -0500
+
+    Primer commit
+
+[33mcommit 81d138635af1f2df617bf5393ff0e0e531d7ab1c[m
+Author: hitpolyagencia <hitpoly.agencia@gmail.com>
+Date:   Thu Dec 5 08:42:10 2024 -0500
+
+    Initialize project using Create React App

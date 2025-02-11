@@ -1,4 +1,5 @@
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import React, { useRef, useState } from "react";
@@ -91,6 +92,12 @@ const CreateArticle = () => {
         setContentBlocks(updatedBlocks);
       }
     }
+  };
+
+  // Función para eliminar un bloque de contenido
+  const handleDeleteBlock = (index) => {
+    const updatedBlocks = contentBlocks.filter((_, i) => i !== index);
+    setContentBlocks(updatedBlocks);
   };
 
   // Modificar la función de cancelar: solo se cancela la subida de la imagen
@@ -211,15 +218,25 @@ const CreateArticle = () => {
                   value={block.content}
                   onChange={(e) => handleTextChange(index, e.target.value)}
                 />
+                {/* Botón para eliminar el bloque de texto */}
+                <Button onClick={() => handleDeleteBlock(index)} sx={{ color: "red", paddingLeft: "8px" }}>
+                  <DeleteIcon />
+                </Button>
               </Box>
             )}
 
             {block.type === "image" && (
-              <Button component="label" sx={{ backgroundColor: "#ECEAEF", color: "#B51AD8", fontWeight: "bold" }}>
-                Seleccionar Imagen
-                <input type="file" hidden onChange={(e) => handleImageUpload(index, e)} />
-                <ArrowForwardIcon sx={{ marginLeft: "8px" }} />
-              </Button>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Button component="label" sx={{ backgroundColor: "#ECEAEF", color: "#B51AD8", fontWeight: "bold" }}>
+                  Seleccionar Imagen
+                  <input type="file" hidden onChange={(e) => handleImageUpload(index, e)} />
+                  <ArrowForwardIcon sx={{ marginLeft: "8px" }} />
+                </Button>
+                {/* Botón para eliminar la imagen */}
+                <Button onClick={() => handleDeleteBlock(index)} sx={{ color: "red", paddingLeft: "8px" }}>
+                  <DeleteIcon />
+                </Button>
+              </Box>
             )}
           </Box>
         ))}
@@ -228,7 +245,7 @@ const CreateArticle = () => {
       {/* Botones para agregar bloques de texto o imagen */}
       <Button onClick={addTextBlock} sx={{ backgroundColor: "#ECEAEF", color: "#B51AD8" }}>Añadir Subtítulo/Párrafo</Button>
       <Button onClick={addImageBlock} sx={{ backgroundColor: "#ECEAEF", color: "#B51AD8" }}>Añadir Imagen</Button>
-      <button onClick={handleCancel}>Cancelar</button>
+
 
       {uploadingImage && <Typography color="primary">Subiendo imagen...</Typography>}
 

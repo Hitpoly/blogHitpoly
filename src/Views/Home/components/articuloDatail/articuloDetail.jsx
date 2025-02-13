@@ -3,15 +3,27 @@ import { useParams, useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
-  CardMedia,
-  Grid,
   Button,
   Container,
+  Paper,
+  List,
+  ListItem,
+  CircularProgress,
+  Grid,
+  Card,
+  CardActionArea,
+  CardMedia,
+  CardContent
 } from "@mui/material";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import Footer from "../../../components/footer/page";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+
+
 
 const ArticleDetail = () => {
   const { id } = useParams();
@@ -21,10 +33,9 @@ const ArticleDetail = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`https://apiblog.hitpoly.com/ajax/getArticuloController.php`)
+    fetch("https://apiblog.hitpoly.com/ajax/getArticuloController.php")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setArticles(data);
         setLoading(false);
       })
@@ -34,13 +45,16 @@ const ArticleDetail = () => {
       });
   }, []);
 
-  if (loading) return <Typography variant="h6">Cargando...</Typography>;
+
+  if (loading)
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <CircularProgress />
+      </Box>
+    );
   if (error)
     return (
-      <Typography
-        variant="h6"
-        color="error"
-      >
+      <Typography variant="h6" color="error" align="center" mt={5}>
         {error}
       </Typography>
     );
@@ -48,112 +62,167 @@ const ArticleDetail = () => {
   const article = articles.find((art) => art.article_id == id);
   if (!article)
     return (
-      <Typography
-        variant="h6"
-        color="error"
-      >
+      <Typography variant="h6" color="error" align="center" mt={5}>
         Artículo no encontrado
       </Typography>
     );
 
   const formattedDate = article?.fecha_actual
-    ? format(new Date(article.fecha_actual), "dd 'de' MMMM 'de' yyyy", {
-        locale: es,
-      })
-    : null;
+    ? format(new Date(article.fecha_actual), "dd 'de' MMMM 'de' yyyy", { locale: es })
+    : "Fecha no disponible";
+
+
+    if (!articles || articles.length === 0) {
+      return null;
+    }
+  
+    const settings = {
+      dots: true,
+      infinite: false,
+      speed: 500,
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      responsive: [
+        { breakpoint: 1024, settings: { slidesToShow: 3 } },
+        { breakpoint: 900, settings: { slidesToShow: 2 } },
+        { breakpoint: 600, settings: { slidesToShow: 1 } },
+      ],
+    };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column" }}>
-      <Container sx={{ flexGrow: 1, marginTop: 11 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", bgcolor: "#fff" }}>
+      <Container sx={{ flexGrow: 1, marginTop: 5, maxWidth: "900px" }}>
         <Button
           onClick={() => navigate(-1)}
-          startIcon={<ArrowBackIcon sx={{ fontWeight: "bold" }} />}
-          sx={{
-            mb: 2,
-            textTransform: "none",
-            color: "primary.main",
-            fontWeight: "bold",
-          }}
+          startIcon={<ArrowBackIcon />}
+          sx={{ mb: 2, textTransform: "none", color: "primary.main", fontWeight: "bold", fontSize: "1rem" }}
         >
           Volver
         </Button>
-
-        <Grid
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
-            gap: "1.5rem",
-            width: "100%",
-          }}
-        >
-          <Grid
-            item
-            xs={12}
-            md={6}
-          >
-            <Typography
-              variant="h4"
-              sx={{
-                fontWeight: "700",
-                marginBottom: 2,
-                fontSize: "3.4rem",
-              }}
-            >
+        
+        
+        <Grid container spacing={2} alignItems="center">
+          <Grid item xs={8}>
+            <Typography variant="h3" sx={{ fontWeight: "bold", color: "#222", mb: 2 }}>
               {article.title}
             </Typography>
-            <Typography
-              variant="body1"
-              sx={{ color: "#666", marginBottom: 2, fontWeight: "700" }}
-            >
-              {article.area} - {formattedDate || "Fecha no disponible"}
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{ color: "#444", fontSize: "1.1rem", fontWeight: "600" }}
-            >
-              {article.content_blocks[0]}
+            <Typography variant="subtitle1" color="textSecondary" mb={3}>
+              {formattedDate}
             </Typography>
           </Grid>
-          <Grid
-            item
-            xs={12}
-            md={6}
-          >
-            {article.images && article.images.length > 0 && (
-              <CardMedia
-                component="img"
-                image={article.images[0]}
-                alt="Imagen principal"
-                sx={{
-                  height: "100%",
-                  backgroundSize: "cover",
-                  objectFit: "cover",
-                  borderRadius: "none",
-                }}
-              />
+          <Grid item xs={4}>
+            {article.images?.[0] && (
+              <img src={article.images[0]} alt="Artículo" style={{ width: "100%", borderRadius: "10px" }} />
             )}
           </Grid>
         </Grid>
+        
 
-        {/* Contenido del artículo */}
-        <Box sx={{ marginTop: 4 }}>
-          {article.content_blocks.slice(2).map((block, index) => (
-            <Typography
-              key={index}
-              variant={index % 2 === 0 ? "body1" : "h5"} // Par: h5 (título), Impar: body1 (párrafo)
-              sx={{
-                fontWeight: index % 2 === 0 ? "600" : "bold",
-                color: index % 2 === 0 ? "#444" : "#222",
-                fontSize: index % 2 === 0 ? "1.1rem" : "1.3rem",
-                marginBottom: 2,
-              }}
-            >
+        <Typography variant="body1" sx={{ fontSize: "1.2rem", color: "#444", mb: 3 }}>
+          {article.content_blocks?.[0]}
+        </Typography>
+
+       
+        <Paper sx={{ p: 4, borderRadius: "10px", boxShadow: 3, bgcolor: "#007baf", color: "white", mb: 3 }}>
+          <Typography variant="h5" sx={{ fontWeight: "bold" }}>Publicidad</Typography>
+          <Typography variant="body1" sx={{ mt: 2, fontSize: "1.1rem" }}>
+            Contenido publicitario aquí.
+          </Typography>
+          <List sx={{ mt: 2 }}>
+            <ListItem>🔹 Punto destacado 1</ListItem>
+            <ListItem>🔹 Punto destacado 2</ListItem>
+            <ListItem>🔹 Punto destacado 3</ListItem>
+          </List>
+          <Box sx={{ display: "flex", gap: 2, mt: 3 }}>
+            <Button variant="contained" color="secondary">
+              Descargar gratis ahora
+            </Button>
+            <Button variant="outlined" sx={{ color: "white", borderColor: "white" }}>
+              Más información →
+            </Button>
+          </Box>
+        </Paper>
+
+ 
+<Grid container spacing={3}>
+  <Grid item xs={12} md={8}>
+    {article.content_blocks?.map((block, index) => (
+      <Box key={index} sx={{ mb: 4 }}>
+       
+        {index === 0 ? (
+          <Typography variant="body1" sx={{ fontSize: "1.2rem", color: "#444", mb: 2 }}>
+            {block}
+          </Typography>
+        ) : (
+          
+          <>
+            {article.images?.[index] && (
+              <img
+                src={article.images[index]}
+                alt={`Imagen ${index + 1}`}
+                style={{
+                  width: "100%",
+                  borderRadius: "10px",
+                  marginBottom: "10px",
+                }}
+              />
+            )}
+            <Typography variant="body1" sx={{ fontSize: "1.2rem", color: "#444" }}>
               {block}
             </Typography>
-          ))}
-        </Box>
+          </>
+        )}
+      </Box>
+    ))}
+  </Grid>
+</Grid>
+
       </Container>
-      <Footer />
+
+   
+      <Container maxWidth="lg" sx={{ mt: 5, mb: 5 }}>
+      <Typography variant="h4" sx={{ fontWeight: "bold", mb: 3 }} align="center">
+        Artículos relacionados
+      </Typography>
+      <Slider {...settings}>
+        {articles.map((relatedArticle) => (
+          <Card
+            key={relatedArticle.article_id}
+            sx={{
+              boxShadow: 3,
+              borderRadius: "10px",
+              maxWidth: 320,
+              height: 320, 
+              display: "flex",
+              flexDirection: "column",
+            }}
+            onClick={() => navigate(`/article/${relatedArticle.article_id}`)}
+          >
+            <CardActionArea sx={{ height: "100%" }}>
+              {relatedArticle.images?.[0] && (
+                <CardMedia
+                  component="img"
+                  image={relatedArticle.images[0]}
+                  alt={relatedArticle.title}
+                  sx={{
+                    height: 180,
+                    objectFit: "cover",
+                  }}
+                />
+              )}
+              <CardContent sx={{ flexGrow: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Typography
+                  variant="h6"
+                  sx={{ color: "#E91E63", fontWeight: "bold", textAlign: "center" }}
+                >
+                  {relatedArticle.title}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        ))}
+      </Slider>
+    </Container>
     </Box>
   );
 };

@@ -5,7 +5,7 @@ import Home from "./Views/Home/page";
 import MenuDeNavegacion from "./Views/components/navbar/navbar";
 import DashboardBlog from "./Views/dashboardBlog/page";
 import Login from "./Views/login/page";
-import HomeArticle from "./Views/HomeArticle/page.jsx";
+import Article from "./Views/HomeArticle/page.jsx";
 import ArticleDetail from "./Views/Home/components/articuloDatail/articuloDetail.jsx";
 
 
@@ -25,7 +25,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboardBlog/*" element={<DashboardBlog />} />
         <Route path="/article/:id" element={<ArticleDetail />} /> 
-        <Route path="/homeArticle" element={<HomeArticle />} /> 
+        <Route path="/articulo" element={<Article />} /> 
       </Routes>
     </Box>
   );

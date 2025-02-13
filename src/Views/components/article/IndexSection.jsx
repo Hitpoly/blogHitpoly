@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Typography, Button, Container, Grid } from "@mui/material";
 import AppCustomComponent from "../../HomeArticle/components/AppCustomComponent";
 
-const IndexSection= ({ 
+const IndexSection = ({ 
   breadcrumb, 
   title, 
   area,
@@ -16,65 +16,67 @@ const IndexSection= ({
   return (
     <Container maxWidth="lg" sx={{ marginTop: 4 }}>
       {/* Breadcrumb */}
-      <Box sx={{ textAlign: 'center', marginBottom: 3 }}>
+      <Box sx={{ textAlign: 'left', marginBottom: 2 }}>
         <Typography variant="body2" color="text.secondary" gutterBottom>
           {breadcrumb}
         </Typography>
       </Box>
 
-      {/* Contenedor principal */}
-      <Grid container spacing={4} alignItems="center" padding={4}>
-        {/* Título y botón a la derecha */}
-        <Grid item xs={12} md={6}>
-          <Typography variant="h3" sx={{ fontWeight: "bold", marginBottom: 2 }}>
-            {title}
-          </Typography>
-          <Typography variant="body1" color="text.primary" paragraph>
-          <strong>{area}</strong> - {date}
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={buttonIcon}
-            sx={{ textTransform: "none" }}
-            onClick={onButtonClick}
-          >
-            {buttonText}
-          </Button>
-        </Grid>
+      {/* Título principal */}
+      <Typography variant="h3" sx={{ fontWeight: "bold", marginBottom: 2, textAlign: 'left' }}>
+        {title}
+      </Typography>
+      <Typography variant="body1" color="text.primary" paragraph sx={{ fontWeight: "bold", textAlign: 'left' }}>
+        <strong>{area}</strong> - {date}
+      </Typography>
+      
+      {/* Botón debajo del título */}
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={buttonIcon}
+        sx={{ textTransform: "none", marginBottom: 3 }}
+        onClick={onButtonClick}
+      >
+        {buttonText}
+      </Button>
 
-        {/* Imagen o fondo */}
-        <Grid item xs={12} md={6}>
-          <Box
-            sx={{
-              backgroundColor: backgroundImage ? "transparent" : "#f0f0f0",
-              backgroundImage: backgroundImage ? `url(${backgroundImage})` : "none",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              width: "100%",
-              height: "250px",
+      {/* Primer párrafo exactamente igual a la imagen */}
+      {contentText && contentText.length > 0 && contentText[0] && (
+        <Box sx={{ 
+          backgroundColor: "#f8f8f8", 
+          padding: "20px", 
+          borderRadius: "8px", 
+          marginBottom: "20px",
+          textAlign: "left"
+        }}>
+          <Typography 
+            variant="body1" 
+            sx={{ 
+              fontSize: "1.1rem", 
+              fontWeight: "500", 
+              color: "#333" 
             }}
-          />
-        </Grid>
-      </Grid>
+          >
+            {contentText[0].content}
+          </Typography>
+        </Box>
+      )}
 
+      {/* Componente personalizado */}
       <AppCustomComponent />
 
-      {/* Texto adicional */}
-      <Box sx={{ padding: "50px" }}>
-        {contentText && contentText.map((block, index) => (
-          <Box key={index} sx={{ marginBottom: 4 }}>
-            {/* Título de la sección */}
-            <Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: 2 }}>
-              {block.title}
-            </Typography>
-            {/* Contenido de la sección */}
-            <Typography variant="body1" color="text.secondary">
-              {block.content}
-            </Typography>
-          </Box>
-        ))}
-      </Box>
+      {/* Otros bloques de contenido */}
+      {contentText && contentText.slice(1).map((block, index) => (
+        <Box key={index} sx={{ marginBottom: 4 }}>
+          <Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: 2 }}>
+            {block.title}
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            {block.content}
+          </Typography>
+        </Box>
+      ))}
     </Container>
   );
 };

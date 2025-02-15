@@ -4,7 +4,8 @@ import { useParams } from "react-router-dom";
 import { verificarSesion } from "../../services/verificarSesion"; // Importar verificarSesion
 import IndexSection from "../components/article/IndexSection";
 import Footer from "../components/footer/page";
-
+import AppCustomCardList from "./components/AppCustomComponent"
+import AppArticleCard  from "./components/AppArticleCard"
 
 const Article = () => {
   const { id } = useParams();
@@ -54,6 +55,8 @@ const Article = () => {
       //   contentText={article.content_blocks}
       //   images={article.images}
      />
+
+     <AppArticleCard/>
       <Footer />
     </Box>
   );

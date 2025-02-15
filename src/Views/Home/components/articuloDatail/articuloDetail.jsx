@@ -22,6 +22,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Footer from "../../../components/footer/page";
+import AppSocialAdvantages from "../../../HomeArticle/components/AppSocialAdvantages";
+import CustomComponent from "../../../HomeArticle/components/AppCustomComponent"
 
 
 const ArticleDetail = () => {
@@ -159,8 +161,11 @@ const ArticleDetail = () => {
         <Typography variant="body1" sx={{ fontSize: "1.2rem", color: "#444", mb: 3 }}>
           {article.content_blocks?.[0]}
         </Typography>
+        <Paper sx={{ p: 4, borderRadius: "10px", boxShadow: 3, bgcolor: "#0B8DB5", color: "white", mb: 3 }}>
 
-        <Paper sx={{ p: 4, borderRadius: "10px", boxShadow: 3, bgcolor: "#007baf", color: "white", mb: 3 }}>
+<CustomComponent/>
+        </Paper>
+        {/* <Paper sx={{ p: 4, borderRadius: "10px", boxShadow: 3, bgcolor: "#007baf", color: "white", mb: 3 }}>
           <Typography variant="h5" sx={{ fontWeight: "bold" }}>Publicidad</Typography>
           <Typography variant="body1" sx={{ mt: 2, fontSize: "1.1rem" }}>
             Contenido publicitario aquí.
@@ -178,8 +183,9 @@ const ArticleDetail = () => {
               Más información →
             </Button>
           </Box>
-        </Paper>
+        </Paper> */}
       </Container>
+<br/>
 
       <AppArticleIndex
   title="Tabla de contenidos"
@@ -190,50 +196,65 @@ const ArticleDetail = () => {
 />
 <br/>
 <br/>
+<Grid container spacing={3} justifyContent="center" alignItems="center">
+  <Grid item xs={12} md={8}>
+    {article.content_blocks?.map((block, index) => {
+      // Cálculo del índice medio para insertar el nuevo bloque
+      const midIndex = Math.floor(article.content_blocks?.length / 2);
 
-      <Grid container spacing={3} justifyContent="center" alignItems="center">
-        <Grid item xs={12} md={8}>
-          {article.content_blocks?.map((block, index) => (
-            <Box key={index} sx={{ mb: 4, display: "flex", flexDirection: "column", alignItems: "center" }}>
-              {/* Agregar subtítulo (si lo tienes en tu contenido) */}
-              {article.subtitles?.[index] && (
-                <Typography
-                  id={`subtitulo-${index}`}
-                  variant="h6"
-                  sx={{ fontWeight: "bold", color: "#333", mb: 2 }}
-                >
-                  {article.subtitles[index]} {/* Esto puede ser un subtítulo extraido de article.subtitles */}
-                </Typography>
-              )}
+      return (
+        <Box key={index} sx={{ mb: 4, display: "flex", flexDirection: "column", alignItems: "center" }}>
+          {/* Agregar subtítulo (si lo tienes en tu contenido) */}
+          {article.subtitles?.[index] && (
+            <Typography
+              id={`subtitulo-${index}`}
+              variant="h6"
+              sx={{ fontWeight: "bold", color: "#333", mb: 2 }}
+            >
+              {article.subtitles[index]}
+            </Typography>
+          )}
 
-              {/* Primer bloque (sin imagen, solo texto) */}
-              {index === 0 ? (
-                <Typography variant="body1" sx={{ fontSize: "1.2rem", color: "#444", mb: 2, textAlign: "center" }}>
-                  {block}
-                </Typography>
-              ) : (
-                <>
-                  {/* Para los demás bloques, mostrar la imagen si existe */}
-                  {article.images?.[index] && (
-                    <img
-                      src={article.images[index]}
-                      alt={`Imagen ${index + 1}`}
-                      style={{
-                        width: "100%",
-                        borderRadius: "10px",
-                        marginBottom: "10px",
-                      }}
-                    />
-                  )}
-                  <Typography variant="body1" sx={{ fontSize: "1.2rem", color: "#444", textAlign: "center" }}>
-                    {block}
-                  </Typography>
-                </>
+          {/* Primer bloque (sin imagen, solo texto) */}
+          {index === 0 ? (
+            <Typography variant="body1" sx={{ fontSize: "1.2rem", color: "#444", mb: 2, textAlign: "center" }}>
+              {block}
+            </Typography>
+          ) : (
+            <>
+              {/* Para los demás bloques, mostrar la imagen si existe */}
+              {article.images?.[index] && (
+                <img
+                  src={article.images[index]}
+                  alt={`Imagen ${index + 1}`}
+                  style={{
+                    width: "100%",
+                    borderRadius: "10px",
+                    marginBottom: "10px",
+                  }}
+                />
               )}
+              <Typography variant="body1" sx={{ fontSize: "1.2rem", color: "#444", textAlign: "center" }}>
+                {block}
+              </Typography>
+            </>
+          )}
+
+          {/* Aquí insertamos algo especial en el bloque medio */}
+          {index === midIndex && (
+            <Box sx={{ mt: 4, textAlign: "center" }}>
+          <AppSocialAdvantages/>
+              
             </Box>
-          ))}
-        </Grid>
-      </Grid>
+          )}
+        </Box>
+      );
+    })}
+  </Grid>
+</Grid>
+
+
+ 
 
       <Container maxWidth="lg" sx={{ mt: 5, mb: 5 }}>
         <Typography variant="h4" sx={{ fontWeight: "bold", mb: 3 }} align="center">

@@ -5,7 +5,7 @@ import { verificarSesion } from "../../services/verificarSesion"; // Importar ve
 import IndexSection from "../components/article/IndexSection";
 import Footer from "../components/footer/page";
 import AppCustomCardList from "./components/AppCustomComponent"
-import CustomComponent  from "./components/AppCustomComponent"
+
 
 const Article = () => {
   const { id } = useParams();
@@ -56,7 +56,7 @@ const Article = () => {
       //   images={article.images}
      />
 
-     <CustomComponent/>
+     <AppCustomCardList/>
       <Footer />
     </Box>
   );

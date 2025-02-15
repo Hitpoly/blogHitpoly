@@ -23,7 +23,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Footer from "../../../components/footer/page";
 import AppSocialAdvantages from "../../../HomeArticle/components/AppSocialAdvantages";
-import CustomComponent from "../../../HomeArticle/components/AppCustomComponent"
+import CustomComponent from "../../../HomeArticle/components/AppCustomComponent";
+import AppBenefitsIndex from "../../../HomeArticle/components/AppBenefitsIndex";
+
 
 
 const ArticleDetail = () => {
@@ -161,10 +163,10 @@ const ArticleDetail = () => {
         <Typography variant="body1" sx={{ fontSize: "1.2rem", color: "#444", mb: 3 }}>
           {article.content_blocks?.[0]}
         </Typography>
-        <Paper sx={{ p: 4, borderRadius: "10px", boxShadow: 3, bgcolor: "#0B8DB5", color: "white", mb: 3 }}>
+        {/* <Paper sx={{ p: 4, borderRadius: "10px", boxShadow: 3, bgcolor: "#0B8DB5", color: "white", mb: 3 }}> */}
 
 <CustomComponent/>
-        </Paper>
+        {/* </Paper> */}
         {/* <Paper sx={{ p: 4, borderRadius: "10px", boxShadow: 3, bgcolor: "#007baf", color: "white", mb: 3 }}>
           <Typography variant="h5" sx={{ fontWeight: "bold" }}>Publicidad</Typography>
           <Typography variant="body1" sx={{ mt: 2, fontSize: "1.1rem" }}>
@@ -195,56 +197,71 @@ const ArticleDetail = () => {
   }))}
 />
 <br/>
+<AppBenefitsIndex/>
 <br/>
-<Grid container spacing={3} justifyContent="center" alignItems="center">
-  <Grid item xs={12} md={8}>
+<Grid container spacing={3} justifyContent="center">
+  <Grid item xs={12} md={6} sx={{ maxWidth: "500px" }}>
     {article.content_blocks?.map((block, index) => {
-      // Cálculo del índice medio para insertar el nuevo bloque
       const midIndex = Math.floor(article.content_blocks?.length / 2);
 
       return (
-        <Box key={index} sx={{ mb: 4, display: "flex", flexDirection: "column", alignItems: "center" }}>
-          {/* Agregar subtítulo (si lo tienes en tu contenido) */}
+        <Box
+          key={index}
+          sx={{
+            mb: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+          }}
+        >
+          {/* Subtítulo */}
           {article.subtitles?.[index] && (
             <Typography
               id={`subtitulo-${index}`}
               variant="h6"
-              sx={{ fontWeight: "bold", color: "#333", mb: 2 }}
+              sx={{
+                fontWeight: "bold",
+                color: "#333",
+                mb: 1,
+                fontSize: "1rem",
+              }}
             >
               {article.subtitles[index]}
             </Typography>
           )}
 
-          {/* Primer bloque (sin imagen, solo texto) */}
-          {index === 0 ? (
-            <Typography variant="body1" sx={{ fontSize: "1.2rem", color: "#444", mb: 2, textAlign: "center" }}>
-              {block}
-            </Typography>
-          ) : (
-            <>
-              {/* Para los demás bloques, mostrar la imagen si existe */}
-              {article.images?.[index] && (
-                <img
-                  src={article.images[index]}
-                  alt={`Imagen ${index + 1}`}
-                  style={{
-                    width: "100%",
-                    borderRadius: "10px",
-                    marginBottom: "10px",
-                  }}
-                />
-              )}
-              <Typography variant="body1" sx={{ fontSize: "1.2rem", color: "#444", textAlign: "center" }}>
-                {block}
-              </Typography>
-            </>
+          {/* Bloque de texto */}
+          <Typography
+            variant="body1"
+            sx={{
+              fontSize: "0.95rem",
+              lineHeight: "1.5",
+              color: "#444",
+              mb: 2,
+              textAlign: "justify",
+            }}
+          >
+            {block}
+          </Typography>
+
+          {/* Imagen si existe */}
+          {article.images?.[index] && (
+            <img
+              src={article.images[index]}
+              alt={`Imagen ${index + 1}`}
+              style={{
+                width: "100%",
+                height: "auto",
+                borderRadius: "5px",
+                marginBottom: "10px",
+              }}
+            />
           )}
 
-          {/* Aquí insertamos algo especial en el bloque medio */}
+          {/* Bloque especial en la mitad */}
           {index === midIndex && (
-            <Box sx={{ mt: 4, textAlign: "center" }}>
-          <AppSocialAdvantages/>
-              
+            <Box sx={{ mt: 4, textAlign: "center", width: "100%" }}>
+              <AppSocialAdvantages />
             </Box>
           )}
         </Box>
@@ -254,51 +271,79 @@ const ArticleDetail = () => {
 </Grid>
 
 
- 
 
-      <Container maxWidth="lg" sx={{ mt: 5, mb: 5 }}>
-        <Typography variant="h4" sx={{ fontWeight: "bold", mb: 3 }} align="center">
-          Artículos relacionados
-        </Typography>
-        <Slider {...settings}>
-          {articles.map((relatedArticle) => (
-            <Card
-              key={relatedArticle.article_id}
+ 
+<Container maxWidth="lg" sx={{ mt: 5, mb: 5 }}>
+  <Typography
+    variant="h4"
+    sx={{
+      fontWeight: "bold",
+      mb: 3,
+      textAlign: "center",
+      fontSize: "1.8rem",
+    }}
+  >
+    Artículos relacionados
+  </Typography>
+
+  <Slider {...settings}>
+    {articles.map((relatedArticle) => (
+      <Card
+        key={relatedArticle.article_id}
+        sx={{
+          boxShadow: 3,
+          borderRadius: "10px",
+          maxWidth: 300,
+          height: 320,
+          display: "flex",
+          flexDirection: "column",
+          transition: "transform 0.3s ease-in-out",
+          "&:hover": { transform: "scale(1.05)" },
+        }}
+        onClick={() => navigate(`/article/${relatedArticle.article_id}`)}
+      >
+        <CardActionArea sx={{ height: "100%" }}>
+          {/* Imagen */}
+          {relatedArticle.images?.[0] && (
+            <CardMedia
+              component="img"
+              image={relatedArticle.images[0]}
+              alt={relatedArticle.title}
               sx={{
-                boxShadow: 3,
-                borderRadius: "10px",
-                maxWidth: 320,
-                height: 320, 
-                display: "flex",
-                flexDirection: "column",
+                height: 160,
+                objectFit: "cover",
               }}
-              onClick={() => navigate(`/article/${relatedArticle.article_id}`)}
+            />
+          )}
+
+          {/* Contenido */}
+          <CardContent
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "10px",
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                color: "#E91E63",
+                fontWeight: "bold",
+                textAlign: "center",
+                fontSize: "1rem",
+              }}
             >
-              <CardActionArea sx={{ height: "100%" }}>
-                {relatedArticle.images?.[0] && (
-                  <CardMedia
-                    component="img"
-                    image={relatedArticle.images[0]}
-                    alt={relatedArticle.title}
-                    sx={{
-                      height: 180,
-                      objectFit: "cover",
-                    }}
-                  />
-                )}
-                <CardContent sx={{ flexGrow: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <Typography
-                    variant="h6"
-                    sx={{ color: "#E91E63", fontWeight: "bold", textAlign: "center" }}
-                  >
-                    {relatedArticle.title}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          ))}
-        </Slider>
-      </Container>
+              {relatedArticle.title}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </Card>
+    ))}
+  </Slider>
+</Container>
+
     </Box>
     <Footer/>
     </>

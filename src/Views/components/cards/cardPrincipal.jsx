@@ -17,7 +17,7 @@ function PostCardOne({
   subtitle,
   creator,
   date,
-  linkArticle, // Solo recibimos linkArticle
+  linkArticle, // Recibe el linkArticle con el ID de la URL
   linkText,
 }) {
   const [hovered, setHovered] = useState(false);
@@ -26,9 +26,9 @@ function PostCardOne({
   const handleMouseEnter = () => setHovered(true);
   const handleMouseLeave = () => setHovered(false);
 
-  const handleClick = () => {
-    // Navegamos al linkArticle sin necesidad de mostrar un postId
-    navigate(linkArticle); // Navegamos solo al linkArticle
+  const handleClick = (e) => {
+    e.stopPropagation(); // Previene que el evento se propague y cause problemas de navegación
+    navigate(linkArticle); // Navega al artículo usando el linkArticle
   };
 
   return (
@@ -59,7 +59,7 @@ function PostCardOne({
           }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          onClick={handleClick} // Al hacer clic en la imagen
+          onClick={handleClick} // Ejecutar la función de navegación al hacer clic en la imagen
         />
 
         {/* Caja con contenido */}
@@ -95,17 +95,16 @@ function PostCardOne({
                   "&:hover": { color: "#4285F4" },
                 }}
               >
-                <a
-                  href="#"
+                <span
                   style={{
                     textDecoration: "none",
                     color: "inherit",
                     cursor: "pointer",
                   }}
-                  onClick={handleClick} // Al hacer clic en el enlace
+                  onClick={handleClick} // Ejecutar la función de navegación
                 >
                   {linkText || "Categoría"}
-                </a>
+                </span>
               </Typography>
             </Box>
 
@@ -124,7 +123,7 @@ function PostCardOne({
               }}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              onClick={handleClick} // Al hacer clic en el título
+              onClick={handleClick} // Ejecutar la función de navegación al hacer clic en el título
             >
               {title}
             </Typography>
@@ -167,7 +166,7 @@ function PostCardOne({
                     }}
                   />
                 }
-                onClick={handleClick} // Al hacer clic en la flecha
+                onClick={handleClick} // Ejecutar la función de navegación al hacer clic en la flecha
                 sx={{
                   margin: { xs: "10px 0", md: "10px" },
                   alignSelf: { xs: "flex-start", md: "flex-end" },

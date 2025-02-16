@@ -8,7 +8,7 @@ import {
   CardMedia,
 } from "@mui/material";
 
-function CaptadorCorreo({ image, title, description }) {
+function CaptadorCorreo({ image, title, description, email, setEmail, onSubmit }) {
   return (
     <Grid
       container
@@ -79,6 +79,8 @@ function CaptadorCorreo({ image, title, description }) {
               variant="outlined"
               fullWidth
               size="small"
+              value={email} // Vincula el valor con el estado
+              onChange={(e) => setEmail(e.target.value)} // Actualiza el estado con el valor del input
             />
             <Button
               variant="contained"
@@ -90,6 +92,7 @@ function CaptadorCorreo({ image, title, description }) {
                 backgroundColor: "#F21C63",
                 width: { xs: "100%", md: "auto" }, // Botón ocupa toda la anchura en móviles
               }}
+              onClick={onSubmit} // Llama a la función onSubmit pasada como propiedad
             >
               Enviar
             </Button>

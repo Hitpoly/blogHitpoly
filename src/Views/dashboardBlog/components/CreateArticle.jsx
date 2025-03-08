@@ -30,7 +30,7 @@ const CreateArticle = () => {
       cancelTokenSource.current = source;
 
       const response = await axios.post(
-        "https://apiblog.hitpoly.com/ajax/cloudinary.php",
+        "https://apinewblog.hitpoly.com/ajax/cloudinary.php",
         formData,
         {
           headers: {
@@ -148,7 +148,7 @@ const CreateArticle = () => {
       };
 
       const response = await axios.post(
-        "https://apiblog.hitpoly.com/ajax/crearArticuloController.php",
+        "https://apinewblog.hitpoly.com/ajax/crearArticuloController.php",
         postData
       );
 

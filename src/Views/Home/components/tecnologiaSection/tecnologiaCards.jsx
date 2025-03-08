@@ -11,7 +11,7 @@ const TecnologiaCards = () => {
 
   useEffect(() => {
     // fetch(`http://localhost/bloghitpoly/ajax/getArticuloController.php`)
-    fetch(`https://apiblog.hitpoly.com/ajax/getArticuloController.php`)
+    fetch(`https://apinewblog.hitpoly.com/ajax/getArticuloController.php`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);

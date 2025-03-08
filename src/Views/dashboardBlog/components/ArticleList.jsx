@@ -25,7 +25,7 @@ const ArticleList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://apiblog.hitpoly.com/ajax/getArticuloController.php")
+    fetch("https://apinewblog.hitpoly.com/ajax/getArticuloController.php")
       .then((response) => response.json())
       .then((data) => {
         if (data) {
@@ -60,30 +60,33 @@ const ArticleList = () => {
       confirmButtonText: "Sí, eliminar",
       cancelButtonText: "Cancelar",
     });
-
+  
     if (!result.isConfirmed) return;
-
+  
     try {
-      const response = await fetch(
-        "https://apiblog.hitpoly.com/ajax/deleteArticuloController.php",
-        {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id: id, accion: "deleteArticulo" }),
-        }
-      );
-
-      const result = await response.json();
-
-      if (result.success) {
+      const response = await fetch("https://apinewblog.hitpoly.com/ajax/deleteArticuloController.php", {
+        method: "POST", // Cambiado de DELETE a POST
+        headers: { "Content-Type": "application/json" },
+        mode: "cors",
+        credentials: "include",
+        body: JSON.stringify({ id: id, accion: "deleteArticulo", _method: "DELETE" }), // Agregamos _method
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+  
+      if (data.success) {
         setArticles((prevArticles) =>
           prevArticles.filter((article) => article.article_id !== id)
         );
         setSelectedArticle(null);
-
+  
         Swal.fire({
           title: "¡Eliminado!",
-          text: result.message || "El artículo ha sido eliminado exitosamente.",
+          text: data.message || "El artículo ha sido eliminado exitosamente.",
           icon: "success",
           timer: 2000,
           showConfirmButton: false,
@@ -91,18 +94,21 @@ const ArticleList = () => {
       } else {
         Swal.fire({
           title: "Error",
-          text: result.message || "No se pudo eliminar el artículo.",
+          text: data.message || "No se pudo eliminar el artículo.",
           icon: "error",
         });
       }
     } catch (error) {
+      console.error("Error en la solicitud:", error);
+      
       Swal.fire({
         title: "Error",
-        text: "Hubo un problema al conectar con el servidor.",
+        text: error.message || "Hubo un problema al conectar con el servidor.",
         icon: "error",
       });
     }
   };
+  
 
   const indexOfLastArticle = page * articlesPerPage;
   const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;

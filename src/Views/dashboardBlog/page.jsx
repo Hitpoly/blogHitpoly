@@ -34,7 +34,7 @@ const DashboardBlog = () => {
   async function verificarSesion() {
     try {
       const response = await axios.post(
-        "https://apiblog.hitpoly.com/ajax/usuarioController.php",
+        "https://apinewblog.hitpoly.com/ajax/usuarioController.php",
         {
           funcion: "verificar_sesion",
         },

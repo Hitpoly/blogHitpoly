@@ -62,7 +62,7 @@ const LoginForm = () => {
   // Función para enviar los datos al backend
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await fetch("https://apiblog.hitpoly.com/ajax/usuarioController.php", {
+      const response = await fetch("https://apinewblog.hitpoly.com/ajax/usuarioController.php", {
       // const response = await fetch("http://localhost/bloghitpoly/ajax/usuarioController.php", {
         method: "POST",
         headers: {

@@ -9,7 +9,7 @@ function Portada() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`https://apiblog.hitpoly.com/ajax/getArticuloController.php`)
+    fetch(`https://apinewblog.hitpoly.com/ajax/getArticuloController.php`)
       .then((response) => response.json())
       .then((data) => {
         const importantArticles = data

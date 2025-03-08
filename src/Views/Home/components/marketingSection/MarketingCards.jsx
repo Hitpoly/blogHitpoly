@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Grid, Typography } from "@mui/material";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { Link } from "react-router-dom";
@@ -8,10 +9,10 @@ import articlesData from "./marketingSection.json";
 
 const MarketingCards = () => {
   const [salesArticles, setSalesArticles] = useState([]);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    // fetch(`http://localhost/bloghitpoly/ajax/getArticuloController.php`)
-    fetch(`https://apiblog.hitpoly.com/ajax/getArticuloController.php`)
+  useEffect(() => {    
+    fetch(`https://apinewblog.hitpoly.com/ajax/getArticuloController.php`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -24,6 +25,14 @@ const MarketingCards = () => {
         console.error("Error al obtener los artículos:", error)
       );
   }, []);
+
+  const handleArticleClick = (id) => {
+    if (id) {
+      navigate(`/article/${id}`);
+    } else {
+      console.error("ID del artículo no válido");
+    }
+  };
 
   // Datos para la tarjeta de plantilla gratuita
   const freeRecursoData = {
@@ -123,6 +132,8 @@ const MarketingCards = () => {
                   xs={12}
                   md={6}
                   key={article.id}
+                  onClick={() => handleArticleClick(article.id)}
+                  sx={{ cursor: "pointer" }}
                 >
                   <ArticleCard article={article} />
                 </Grid>

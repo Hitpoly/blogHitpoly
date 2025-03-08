@@ -14,7 +14,7 @@ function Newsletter() {
     }
 
     try {
-      const response = await fetch("https://apiblog.hitpoly.com/ajax/emailController.php", {
+      const response = await fetch("https://apinewblog.hitpoly.com/ajax/emailController.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

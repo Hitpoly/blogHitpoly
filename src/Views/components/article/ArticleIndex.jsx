@@ -2,11 +2,11 @@ import React from "react";
 import { Box, List, ListItem, ListItemText, Container } from "@mui/material";
 
 const ArticleIndex = ({
-  title = "Índice del artículo", 
-  items = [], 
-  containerStyles = {}, 
-  boxStyles = {}, 
-  titleStyles = {}, 
+  title = "Índice del artículo",
+  items = [],
+  containerStyles = {},
+  boxStyles = {},
+  titleStyles = {},
   listStyles = {},
 }) => {
   return (
@@ -18,19 +18,19 @@ const ArticleIndex = ({
         justifyContent: "center",
         alignItems: "center",
         minHeight: "25vw",
-        ...containerStyles, 
+        ...containerStyles,
       }}
     >
       <Box
         sx={{
-          position: "relative", 
+          position: "relative",
           backgroundColor: "#F5F5F5",
           padding: 3,
           borderRadius: 2,
           width: "50vw",
           textAlign: "center",
           boxShadow: 1,
-          ...boxStyles, 
+          ...boxStyles,
         }}
       >
         {/* Título flotante */}
@@ -41,12 +41,12 @@ const ArticleIndex = ({
             left: "20px",
             backgroundColor: "#E0E0E0",
             borderRadius: "10px",
-            padding: "4px 12px", 
+            padding: "4px 12px",
             fontSize: "1.3rem",
             fontWeight: "500",
             color: "#333",
-            boxShadow: 1, 
-            ...titleStyles, 
+            boxShadow: 1,
+            ...titleStyles,
           }}
         >
           {title}
@@ -56,7 +56,10 @@ const ArticleIndex = ({
         <List sx={{ ...listStyles }}>
           {items.length > 0 ? (
             items.map((item, index) => (
-              <ListItem key={index} disablePadding>
+              <ListItem
+                key={index}
+                disablePadding
+              >
                 <ListItemText
                   primary={`${index + 1}. ${item}`}
                   sx={{

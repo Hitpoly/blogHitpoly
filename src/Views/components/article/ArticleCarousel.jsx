@@ -4,8 +4,8 @@ import Slider from "react-slick"; // Necesitas instalar react-slick y slick-caro
 
 const ArticleCarousel = ({
   title = "Artículos relacionados",
-  articles = [], // Lista de artículos a mostrar
-  settings = {}, // Configuración personalizada del carrusel
+  articles = [], 
+  settings = {},
 }) => {
   // Configuración por defecto para el carrusel
   const defaultSettings = {

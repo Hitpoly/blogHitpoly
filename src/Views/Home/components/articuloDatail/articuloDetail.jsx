@@ -1,41 +1,134 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import {
   Box,
   Typography,
-  Button,
   Container,
-  Paper,
-  List,
-  ListItem,
   CircularProgress,
   Grid,
-  Card,
-  CardActionArea,
-  CardMedia,
-  CardContent,
+  Link,
+  Breadcrumbs,
 } from "@mui/material";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import ArticleRelatedCarousel from "./ArticleRelatedCarousel"; // <<< RUTA DE IMPORTACIÓN AJUSTABLE
+
+// Estos imports se mantienen según tu código original
 import Footer from "../../../components/footer/page";
 import AppSocialAdvantages from "../../../HomeArticle/components/AppSocialAdvantages";
 import CustomComponent from "../../../HomeArticle/components/AppCustomComponent";
 import AppBenefitsIndex from "../../../HomeArticle/components/AppBenefitsIndex";
 
+// Función para generar slug (Mantenida aquí porque se usa en Breadcrumbs y SEO)
+const slugify = (text) => {
+  if (!text) return "";
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[ñáéíóúü]/g, (match) => {
+      const replacements = {
+        ñ: "n",
+        á: "a",
+        é: "e",
+        í: "i",
+        ó: "o",
+        ú: "u",
+        ü: "u",
+      };
+      return replacements[match] || match;
+    })
+    .replace(/\s+/g, "-")
+    .replace(/[^\w\-]+/g, "")
+    .replace(/\-\-+/g, "-");
+};
+
+// Se eliminaron NextArrow y PrevArrow
+// Se eliminó la configuración de slick-carousel
+
+// Componente para la Tabla de Contenidos (Index) (SIN CAMBIOS)
+const AppArticleIndex = ({ subtitles }) => {
+  return (
+    <Box
+      sx={{
+        backgroundColor: "#F5F5F5",
+        padding: 3,
+        borderRadius: 2,
+        boxShadow: 1,
+        width: { xs: "90%", md: "50%" },
+        margin: "0 auto",
+        mb: 4, 
+      }}
+    >
+      <Typography
+        variant="h6"
+        sx={{ textAlign: "center", mb: 2, fontWeight: "bold" }}
+      >
+        Tabla de contenidos
+      </Typography>
+      <ul style={{ listStyleType: "none", paddingLeft: 0 }}>
+        {subtitles.map((subtitle, index) => (
+          <li
+            key={index}
+            style={{ marginBottom: "10px", textAlign: "center" }}
+          >
+            <Link
+              href={`#subtitulo-${index}`} 
+              style={{
+                textDecoration: "none",
+                color: "#333",
+                fontSize: "1.05rem",
+                display: "block",
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById(`subtitulo-${index}`).scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+              }}
+            >
+              {`${index + 1}. ${subtitle.text}`}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </Box>
+  );
+};
+
 const ArticleDetail = () => {
-  const { id } = useParams();
+  const { slug_y_id } = useParams();
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  // El estado de arrastre ya no es necesario aquí, ya que el carrusel lo maneja internamente.
+  // Sin embargo, si quieres mantener la lógica de click-prevención, el carrusel la tiene.
 
+  let articleId = null;
+  if (slug_y_id) {
+    const parts = slug_y_id.split("-");
+    articleId = parts[parts.length - 1];
+  }
+
+  // Hook para la carga de datos (SIN CAMBIOS)
   useEffect(() => {
+    if (!articleId || isNaN(Number(articleId))) {
+      setLoading(false);
+      if (slug_y_id) {
+        setError("ID de artículo no válido en la ruta.");
+      }
+      return;
+    }
+
     fetch("https://apinewblog.hitpoly.com/ajax/getArticuloController.php")
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Error al cargar los artículos.");
+        }
+        return response.json();
+      })
       .then((data) => {
         setArticles(data);
         setLoading(false);
@@ -44,8 +137,11 @@ const ArticleDetail = () => {
         setError(err.message);
         setLoading(false);
       });
-  }, []);
+  }, [articleId, slug_y_id]);
 
+  // Se eliminó la función handleCardClick de aquí, ya que se encuentra dentro de ArticleRelatedCarousel.
+
+  // Estados de carga y error (SIN CAMBIOS)
   if (loading)
     return (
       <Box
@@ -59,29 +155,33 @@ const ArticleDetail = () => {
     );
   if (error)
     return (
-      <Typography
-        variant="h6"
-        color="error"
-        align="center"
-        mt={5}
-      >
+      <Typography variant="h6" color="error" align="center" mt={5}>
         {error}
       </Typography>
     );
 
-  const article = articles.find((art) => art.article_id == id);
+  // Encontrar el artículo actual (SIN CAMBIOS)
+  const article = articles.find(
+    (art) => String(art.article_id) === String(articleId)
+  );
+
   if (!article)
     return (
-      <Typography
-        variant="h6"
-        color="error"
-        align="center"
-        mt={5}
-      >
-        Artículo no encontrado
+      <Typography variant="h6" color="error" align="center" mt={5}>
+        Artículo no encontrado. (ID Buscado: {articleId})
       </Typography>
     );
 
+  // Redirección para URLs incorrectas de slug (SEO) (SIN CAMBIOS)
+  const correctSlug = slugify(article.title);
+  const correctPath = `/article/${correctSlug}-${article.article_id}`;
+
+  if (location.pathname !== correctPath) {
+    navigate(correctPath, { replace: true });
+    return null;
+  }
+
+  // Formato de fecha (SIN CAMBIOS)
   const formattedDate = article?.fecha_actual
     ? format(new Date(article.fecha_actual), "dd 'de' MMMM 'de' yyyy", {
         locale: es,
@@ -90,63 +190,30 @@ const ArticleDetail = () => {
 
   const subtitles = article?.subtitles || [];
 
-  const settings = {
-    dots: true,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    responsive: [
-      { breakpoint: 1024, settings: { slidesToShow: 3 } },
-      { breakpoint: 900, settings: { slidesToShow: 2 } },
-      { breakpoint: 600, settings: { slidesToShow: 1 } },
-    ],
-  };
-
-  console.log(articles);
-
-  const AppArticleIndex = ({ title, subtitles }) => {
-    return (
-      <>
-        {/* Título con estilo */}
-        {/* <h1 style={{ textAlign: "center", fontSize: "2rem", fontWeight: "bold" }}>{title}</h1> */}
-
-        {/* Lista de subtítulos */}
-        <Box
+  // Función para renderizar el primer bloque de contenido en párrafos (SIN CAMBIOS)
+  const renderIntroContent = (contentBlock) => {
+    if (!contentBlock) return null;
+    return contentBlock.split('\n').map((paragraph, index) => {
+      if (paragraph.trim() === '') return null;
+      return (
+        <Typography
+          key={index}
+          variant="body1"
           sx={{
-            backgroundColor: "#F5F5F5",
-            padding: 3,
-            borderRadius: 2,
-            boxShadow: 1,
-            width: "50%",
-            margin: "0 auto",
+            fontSize: "1.2rem",
+            color: "#444",
+            mt: 0,
+            mb: 2,
+            textAlign: 'left'
           }}
         >
-          <ul style={{ listStyleType: "none", paddingLeft: 0 }}>
-            {subtitles.map((subtitle, index) => (
-              <li
-                key={index}
-                style={{ marginBottom: "10px", textAlign: "center" }}
-              >
-                <a
-                  href={subtitle.link}
-                  style={{
-                    textDecoration: "none",
-                    color: "#333",
-                    fontSize: "1.1rem",
-                    fontWeight: "500",
-                    display: "block",
-                  }}
-                >
-                  {`${index + 1}. ${subtitle.text}`}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </Box>
-      </>
-    );
+          {paragraph.trim()}
+        </Typography>
+      );
+    });
   };
+
+  // Se eliminó la configuración de react-slick (settings)
 
   return (
     <>
@@ -159,171 +226,121 @@ const ArticleDetail = () => {
         }}
       >
         <Container sx={{ flexGrow: 1, marginTop: 5, maxWidth: "900px" }}>
-          <Button
-            onClick={() => navigate(-1)}
-            startIcon={<ArrowBackIcon />}
-            sx={{
-              mb: 2,
-              textTransform: "none",
-              color: "primary.main",
-              fontWeight: "bold",
-              fontSize: "1rem",
-            }}
-          >
-            Volver
-          </Button>
+          {/* Breadcrumbs (SIN CAMBIOS) */}
+          <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 4 }}>
+            <Link underline="hover" color="inherit" component={Link} to="/">
+              Inicio
+            </Link>
+            {article.area && (
+              <Link
+                underline="hover"
+                color="inherit"
+                component={Link}
+                to={`/articulos-${slugify(article.area)}`}
+              >
+                {article.area.charAt(0).toUpperCase() + article.area.slice(1)}{" "}
+              </Link>
+            )}
+            <Typography color="text.primary">{article.title}</Typography>
+          </Breadcrumbs>
 
-          <Grid
-            container
-            spacing={2}
-            alignItems="center"
-          >
-            <Grid
-              md={6}
-              item
-              xs={12}
-            >
+          <Grid container spacing={4} alignItems="center">
+            {/* Título, Fecha y Autor (SIN CAMBIOS) */}
+            <Grid md={6} item xs={12}>
               <Typography
                 variant="h3"
-                sx={{ fontWeight: "bold", color: "#222", mb: 2 }}
+                sx={{
+                  fontWeight: "bold",
+                  color: "#333",
+                  mb: 2,
+                  fontSize: { xs: "2rem", md: "2.8rem" },
+                }}
               >
                 {article.title}
               </Typography>
-              <Typography
-                variant="subtitle1"
-                color="textSecondary"
-                mb={3}
-              >
-                {formattedDate}
+              <Typography variant="body2" sx={{ color: "#6A788A", mb: 0.5 }}>
+                Actualizado: {formattedDate}
               </Typography>
+              {article.author_name && (
+                <Typography variant="body2" sx={{ color: "#6A788A", mb: 3 }}>
+                  Escrito por: {article.author_name}
+                </Typography>
+              )}
             </Grid>
-            <Grid
-              md={6}
-              item
-              xs={12}
-            >
-              {article.images?.[0] && (
+            {/* Imagen principal (SIN CAMBIOS) */}
+            <Grid md={6} item xs={12}>
+              {article.post_image_url && (
                 <img
-                  src={article.images[0]}
+                  src={article.post_image_url}
                   alt="Artículo"
-                  style={{ width: "100%", borderRadius: "10px" }}
+                  style={{
+                    width: "100%",
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                  }}
                 />
               )}
             </Grid>
           </Grid>
 
-          <Typography
-            variant="body1"
-            sx={{ fontSize: "1.2rem", color: "#444", mb: 3 }}
-          >
-            {article.content_blocks?.[0]}
-          </Typography>
-          {/* <Paper sx={{ p: 4, borderRadius: "10px", boxShadow: 3, bgcolor: "#0B8DB5", color: "white", mb: 3 }}> */}
-
-          <CustomComponent />
-          {/* </Paper> */}
-          {/* <Paper sx={{ p: 4, borderRadius: "10px", boxShadow: 3, bgcolor: "#007baf", color: "white", mb: 3 }}>
-          <Typography variant="h5" sx={{ fontWeight: "bold" }}>Publicidad</Typography>
-          <Typography variant="body1" sx={{ mt: 2, fontSize: "1.1rem" }}>
-            Contenido publicitario aquí.
-          </Typography>
-          <List sx={{ mt: 2 }}>
-            <ListItem>🔹 Punto destacado 1</ListItem>
-            <ListItem>🔹 Punto destacado 2</ListItem>
-            <ListItem>🔹 Punto destacado 3</ListItem>
-          </List>
-          <Box sx={{ display: "flex", gap: 2, mt: 3 }}>
-            <Button variant="contained" color="secondary">
-              Descargar gratis ahora
-            </Button>
-            <Button variant="outlined" sx={{ color: "white", borderColor: "white" }}>
-              Más información →
-            </Button>
+          {/* Primer bloque de contenido (Introducción) (SIN CAMBIOS) */}
+          <Box sx={{ mt: 4, mb: 3, textAlign: 'left' }}>
+            {renderIntroContent(article.content_blocks?.[0])}
           </Box>
-        </Paper> */}
+          
+          {/* Componente Custom (SIN CAMBIOS) */}
+          <CustomComponent />
         </Container>
         <br />
 
-        <AppArticleIndex
-          title="Tabla de contenidos"
-          subtitles={subtitles.map((subtitle, index) => ({
-            text: subtitle, // Aquí lo dejamos como está, ya que subtitle es una cadena de texto
-            link: `#subtitulo-${index}`,
-          }))}
-        />
+        {/* Tabla de Contenidos (SIN CAMBIOS) */}
+        {subtitles.length > 0 && <AppArticleIndex
+            subtitles={subtitles.map((subtitle) => ({ text: subtitle, link: `#` }))}
+        />}
         <br />
+        
+        {/* Componente de Beneficios/Índice Adicional (SIN CAMBIOS) */}
         <AppBenefitsIndex />
         <br />
-        <Grid
-          container
-          spacing={3}
-          justifyContent="center"
-        >
-          <Grid
-            item
-            xs={12}
-            md={6}
-            sx={{ maxWidth: "500px" }}
-          >
+        
+        {/* Contenido principal del artículo (SIN CAMBIOS) */}
+        <Grid container spacing={3} justifyContent="center">
+          <Grid item xs={12} md={8} sx={{ maxWidth: "900px" }}>
             {article.content_blocks?.map((block, index) => {
+              if (index === 0) return null; 
+
               const midIndex = Math.floor(article.content_blocks?.length / 2);
 
               return (
                 <Box
                   key={index}
-                  sx={{
-                    padding: 2,
-                    mb: 4,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                  }}
+                  sx={{ padding: 2, mb: 4, display: "flex", flexDirection: "column", alignItems: "flex-start" }}
                 >
-                  {/* Subtítulo */}
-                  {article.subtitles?.[index] && (
+                  {article.subtitles?.[index - 1] && (
                     <Typography
-                      id={`subtitulo-${index}`}
-                      variant="h6"
-                      sx={{
-                        fontWeight: "bold",
-                        color: "#333",
-                        mb: 1,
-                        fontSize: "1rem",
-                      }}
+                      id={`subtitulo-${index - 1}`}
+                      variant="h5"
+                      component="h2"
+                      sx={{ fontWeight: "bold", color: "#333", mb: 2, fontSize: "1.5rem" }}
                     >
-                      {article.subtitles[index]}
+                      {article.subtitles[index - 1]}
                     </Typography>
                   )}
 
-                  {/* Bloque de texto */}
                   <Typography
                     variant="body1"
-                    sx={{
-                      fontSize: "0.95rem",
-                      lineHeight: "1.5",
-                      color: "#444",
-                      mb: 2,
-                      textAlign: "justify",
-                    }}
-                  >
-                    {block}
-                  </Typography>
+                    sx={{ fontSize: "1rem", lineHeight: "1.6", color: "#444", mb: 2, textAlign: "justify" }}
+                    dangerouslySetInnerHTML={{ __html: block.replace(/\n/g, "<br/>") }}
+                  />
 
-                  {/* Imagen si existe */}
                   {article.images?.[index] && (
                     <img
                       src={article.images[index]}
-                      alt={`Imagen ${index + 1}`}
-                      style={{
-                        width: "100%",
-                        height: "auto",
-                        borderRadius: "5px",
-                        marginBottom: "10px",
-                      }}
+                      alt={`Imagen ${index}`}
+                      style={{ width: "100%", height: "auto", borderRadius: "5px", marginBottom: "10px" }}
                     />
                   )}
 
-                  {/* Bloque especial en la mitad */}
                   {index === midIndex && (
                     <Box sx={{ mt: 4, textAlign: "center", width: "100%" }}>
                       <AppSocialAdvantages />
@@ -335,81 +352,14 @@ const ArticleDetail = () => {
           </Grid>
         </Grid>
 
-        <Container
-          maxWidth="lg"
-          sx={{ mt: 5, mb: 5 }}
-        >
-          <Typography
-            variant="h4"
-            sx={{
-              fontWeight: "bold",
-              mb: 3,
-              textAlign: "center",
-              fontSize: "1.8rem",
-            }}
-          >
-            Artículos relacionados
-          </Typography>
-
-          <Slider {...settings}>
-            {articles.map((relatedArticle) => (
-              <Card
-                key={relatedArticle.article_id}
-                sx={{
-                  boxShadow: 3,
-                  borderRadius: "10px",
-                  maxWidth: 300,
-                  height: 320,
-                  display: "flex",
-                  flexDirection: "column",
-                  transition: "transform 0.3s ease-in-out",
-                  "&:hover": { transform: "scale(1.05)" },
-                }}
-                onClick={() =>
-                  navigate(`/article/${relatedArticle.article_id}`)
-                }
-              >
-                <CardActionArea sx={{ height: "100%" }}>
-                  {/* Imagen */}
-                  {relatedArticle.images?.[0] && (
-                    <CardMedia
-                      component="img"
-                      image={relatedArticle.images[0]}
-                      alt={relatedArticle.title}
-                      sx={{
-                        height: 160,
-                        objectFit: "cover",
-                      }}
-                    />
-                  )}
-
-                  {/* Contenido */}
-                  <CardContent
-                    sx={{
-                      flexGrow: 1,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      padding: "10px",
-                    }}
-                  >
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        color: "#E91E63",
-                        fontWeight: "bold",
-                        textAlign: "center",
-                        fontSize: "1rem",
-                      }}
-                    >
-                      {relatedArticle.title}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            ))}
-          </Slider>
-        </Container>
+        {/* USO DEL NUEVO CARRUSEL IMPORTADO */}
+        {articles.length > 0 && articleId && (
+            <ArticleRelatedCarousel 
+                articles={articles} 
+                currentArticleId={articleId} 
+            />
+        )}
+        
       </Box>
       <Footer />
     </>

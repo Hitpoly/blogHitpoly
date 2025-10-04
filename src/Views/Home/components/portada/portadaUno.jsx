@@ -4,6 +4,22 @@ import { Grid, Box } from "@mui/material";
 import PostCardOne from "../../../components/cards/cardPrincipal";
 import PostCardTwo from "../../../components/cards/cardPosicionTwo";
 
+// ⬅️ FUNCIÓN PARA CONVERTIR TÍTULO EN SLUG
+const slugify = (text) => {
+  if (!text) return '';
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[ñáéíóúü]/g, (match) => {
+      // Reemplaza caracteres especiales (tilde y eñe)
+      const replacements = { 'ñ': 'n', 'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u', 'ü': 'u' };
+      return replacements[match] || match;
+    })
+    .replace(/\s+/g, '-')           // Reemplaza espacios con guiones
+    .replace(/[^\w\-]+/g, '')       // Elimina todos los caracteres no alfanuméricos (excepto guiones)
+    .replace(/\-\-+/g, '-');        // Reemplaza guiones múltiples con uno solo
+};
+
 function Portada() {
   const [articles, setArticles] = useState([]);
   const navigate = useNavigate();
@@ -49,10 +65,25 @@ function Portada() {
       })
       .catch((error) => console.error("Error al obtener los artículos:", error));
   }, []);
+  
+  // ⬅️ FUNCIÓN CLAVE: Generar el enlace con SLUG y ID
+  const getArticleLink = (article) => {
+      if (!article || !article.article_id || !article.title) return "#";
+      const slug = slugify(article.title);
+      // Formato de ruta: /article/slug-id (ej: /article/mi-titulo-38)
+      return `/article/${slug}-${article.article_id}`;
+  };
 
+  // La función handleArticleClick original no se utiliza en el JSX, por lo que se puede eliminar
+  // o modificar si se usa en otro lugar. La mantendremos por ahora como referencia, pero ya no 
+  // afecta a las tarjetas:
   const handleArticleClick = (id) => {
     if (id) {
-      navigate(`/article/${id}`);
+      // Esta función debería ser actualizada si la usas con un onClick:
+      const articleToNavigate = articles.find(art => art.article_id == id);
+      if(articleToNavigate) {
+          navigate(getArticleLink(articleToNavigate));
+      }
     } else {
       console.error("ID del artículo no válido");
     }
@@ -76,7 +107,8 @@ function Portada() {
                 creator={articles[0].author_name || "Anónimo"}
                 date={articles[0].fecha_actual || ""}
                 linkText={articles[0].linkText || "Leer más"}
-                linkArticle={`/article/${articles[0].article_id}`}
+                // ⬅️ Usar getArticleLink
+                linkArticle={getArticleLink(articles[0])} 
               />
             )}
             {articles.length === 0 && <p>No hay artículos disponibles.</p>}
@@ -92,7 +124,8 @@ function Portada() {
                   image={article.post_image_url}
                   title={article.title}
                   linkText={"Leer más"}
-                  linkArticle={`/article/${article.article_id}`}
+                  // ⬅️ Usar getArticleLink
+                  linkArticle={getArticleLink(article)}
                   creator={article.author_name || "Anónimo"}
                 />
               </Box>

@@ -5,12 +5,27 @@ import { useNavigate } from "react-router-dom";
 import TextSectionComponent from "../../../components/textos/estructuraIzquierda/componenteDeTexto";
 import RecursosMasUsadosBase from "../../../components/cards/cardRecursosMasUsados";
 
+// 🔑 FUNCIÓN NECESARIA: Genera el slug a partir del título
+const slugify = (text) => {
+  if (!text) return '';
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[ñáéíóúü]/g, (match) => {
+      const replacements = { 'ñ': 'n', 'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u', 'ü': 'u' };
+      return replacements[match] || match;
+    })
+    .replace(/\s+/g, '-') 
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-');
+};
+
+
 function RecursosMasUsados() {
   const [posts, setPosts] = useState({ marketing: [], ventas: [], tecnologia: [] });
   const navigate = useNavigate();
 
   useEffect(() => {
-    // fetch("http://localhost/bloghitpoly/ajax/getArticuloController.php")
     fetch("https://apinewblog.hitpoly.com/ajax/getArticuloController.php")
       .then((response) => response.json())
       .then((data) => {
@@ -27,9 +42,17 @@ function RecursosMasUsados() {
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
-  const handleArticleClick = (id) => {
-    console.log("Redirigiendo a:", `/article/${id}`); // Verifica en consola
-    navigate(`/article/${id}`);
+  // 🔑 LÓGICA ACTUALIZADA: Recibe el ID y el título para generar el slug-id
+  const handleArticleClick = (id, title) => {
+    // 💡 NOTA IMPORTANTE: El código original llamaba a handleArticleClick solo con el ID:
+    // onClick={() => handleArticleClick(post.article_id)}
+    // Debes actualizar el onClick para pasar también el TÍTULO.
+    // Usaremos un valor por defecto ('Artículo sin Título') en caso de que 'title' no se pase
+    const slug = slugify(title || 'Artículo sin Título'); 
+    const path = `/article/${slug}-${id}`;
+    
+    console.log("Redirigiendo a:", path); // Verifica en consola
+    navigate(path);
   };
 
   return (
@@ -82,7 +105,8 @@ function RecursosMasUsados() {
                     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                     cursor: "pointer", // Agrega cursor pointer para indicar clic
                   }}
-                  onClick={() => handleArticleClick(post.article_id)} // Aquí se ejecuta el evento
+                  // 🚨 CORRECCIÓN: Ahora se pasan el ID y el TITLE al manejador de clic
+                  onClick={() => handleArticleClick(post.article_id, post.title)} 
                 >
                   <RecursosMasUsadosBase
                     image={post.post_image_url}

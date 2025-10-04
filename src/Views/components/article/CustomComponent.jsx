@@ -1,5 +1,15 @@
 import React from "react";
-import { Box, Typography, Button, Grid, Container, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Grid,
+  Container,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const CustomComponent = ({
@@ -16,7 +26,10 @@ const CustomComponent = ({
   buttonSecondaryAction,
 }) => {
   return (
-    <Container maxWidth="lg" sx={{ marginTop: 4 }}>
+    <Container
+      maxWidth="lg"
+      sx={{ marginTop: 4, padding: 0 }}
+    >
       <Box
         sx={{
           backgroundColor: backgroundColor,
@@ -25,9 +38,17 @@ const CustomComponent = ({
           borderRadius: 2,
         }}
       >
-        <Grid container spacing={4} alignItems="center">
+        <Grid
+          container
+          spacing={4}
+          alignItems="center"
+        >
           {/* Imagen a la izquierda */}
-          <Grid item xs={12} md={3}>
+          <Grid
+            item
+            xs={12}
+            md={3}
+          >
             {imageSrc ? (
               <Box
                 component="img"
@@ -53,18 +74,36 @@ const CustomComponent = ({
           </Grid>
 
           {/* Contenido a la derecha */}
-          <Grid item xs={12} md={9}>
-            <Typography variant="h4" sx={{ fontWeight: "bold", marginBottom: 2 }}>
+          <Grid
+            item
+            xs={12}
+            md={9}
+          >
+            <Typography
+              variant="h4"
+              sx={{ fontWeight: "bold", marginBottom: 2 }}
+            >
               {title}
             </Typography>
-            <Typography variant="h5" paragraph>
+            <Typography
+              variant="h5"
+              paragraph
+            >
               {description}
             </Typography>
 
             {/* Lista de puntos */}
-            <Grid container spacing={2}>
+            <Grid
+              container
+              spacing={2}
+            >
               {listItems.map((column, columnIndex) => (
-                <Grid item xs={12} sm={6} key={`column-${columnIndex}`}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  key={`column-${columnIndex}`}
+                >
                   <List>
                     {column.map((item, itemIndex) => (
                       <ListItem key={`item-${columnIndex}-${itemIndex}`}>

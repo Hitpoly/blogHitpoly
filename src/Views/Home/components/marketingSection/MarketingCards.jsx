@@ -5,32 +5,57 @@ import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { Link } from "react-router-dom";
 import ArticleCard from "../../../components/cards/articulosSection";
 import FreeRecursoCard from "../../../components/cards/recursoDescargable";
-import articlesData from "./marketingSection.json";
+
+// 🔑 FUNCIÓN NECESARIA: Genera el slug a partir del título
+const slugify = (text) => {
+  if (!text) return '';
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[ñáéíóúü]/g, (match) => {
+      const replacements = { 'ñ': 'n', 'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u', 'ü': 'u' };
+      return replacements[match] || match;
+    })
+    .replace(/\s+/g, '-') 
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-');
+};
+
 
 const MarketingCards = () => {
-  const [salesArticles, setSalesArticles] = useState([]);
+  const [marketingArticles, setMarketingArticles] = useState([]); 
   const navigate = useNavigate();
 
-  useEffect(() => {    
+  useEffect(() => {
     fetch(`https://apinewblog.hitpoly.com/ajax/getArticuloController.php`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then((data) => {
-        console.log(data);
-        const marquetingArticles = data.filter(
+        console.log("Datos de la API recibidos:", data);
+        const filteredArticles = data.filter(
           (article) => article.area === "marketing"
         );
-        setSalesArticles(marquetingArticles);
+        setMarketingArticles(filteredArticles);
       })
       .catch((error) =>
-        console.error("Error al obtener los artículos:", error)
+        console.error("Error al obtener o procesar los artículos:", error)
       );
   }, []);
 
-  const handleArticleClick = (id) => {
-    if (id) {
-      navigate(`/article/${id}`);
+  // 🔄 LÓGICA ACTUALIZADA: Recibe el ID y el título para generar el slug-id
+  const handleArticleClick = (id, title) => {
+    if (id && title) {
+      const slug = slugify(title);
+      const path = `/article/${slug}-${id}`;
+      
+      console.log("Redirigiendo a:", path);
+      navigate(path);
     } else {
-      console.error("ID del artículo no válido");
+      console.error("ID o título del artículo no válido");
     }
   };
 
@@ -39,7 +64,7 @@ const MarketingCards = () => {
     title: "Plantilla Gratuita para tu Estrategia de Marketing",
     description:
       "Descarga esta plantilla para estructurar tu estrategia de marketing de manera efectiva.",
-    imageUrl: "/images/estrategiaDeMarketing.jpg", // Asegúrate de tener una URL válida de la imagen
+    imageUrl: "/images/estrategiaDeMarketing.jpg",
     buttonText: "Descargar ahora",
   };
 
@@ -53,7 +78,7 @@ const MarketingCards = () => {
           padding: { xs: "0px", md: "40px" },
         }}
       >
-        {/* Encabezado */}
+        {/* Encabezado... (sin cambios) */}
         <Box
           sx={{
             width: "100%",
@@ -88,7 +113,7 @@ const MarketingCards = () => {
           />
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Link
-              to="/articulos-ventas"
+              to="/articulos-ventas" 
               style={{ textDecoration: "none" }}
             >
               <Typography
@@ -126,18 +151,27 @@ const MarketingCards = () => {
               container
               spacing={1}
             >
-              {salesArticles.map((article) => (
+              {marketingArticles.slice(0, 4).map((article) => ( 
                 <Grid
                   item
                   xs={12}
                   md={6}
-                  key={article.id}
-                  onClick={() => handleArticleClick(article.id)}
+                  key={article.article_id}
+                  // 🚀 CAMBIO CLAVE: Ahora pasamos article.article_id Y article.title
+                  onClick={() => handleArticleClick(article.article_id, article.title)}
                   sx={{ cursor: "pointer" }}
                 >
                   <ArticleCard article={article} />
                 </Grid>
               ))}
+              {/* Mostrar mensaje si no hay artículos */}
+              {marketingArticles.length === 0 && (
+                <Grid item xs={12}>
+                    <Typography variant="body1" color="textSecondary" align="center" sx={{p: 2}}>
+                        Cargando artículos o no hay artículos de Marketing disponibles.
+                    </Typography>
+                </Grid>
+              )}
             </Grid>
           </Grid>
 

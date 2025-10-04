@@ -9,14 +9,43 @@ function Portada() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("Fetching articles...");
     fetch(`https://apinewblog.hitpoly.com/ajax/getArticuloController.php`)
-      .then((response) => response.json())
+      .then((response) => {
+        console.log("API response received:", response);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then((data) => {
-        const importantArticles = data
-          .filter((article) => article.area === "articulos_importantes")
-          .sort((a, b) => new Date(b.fecha_actual) - new Date(a.fecha_actual));
+        console.log("Raw data from API:", data);
 
-        setArticles(importantArticles);
+        // Asegúrate de que los datos sean un array
+        if (!Array.isArray(data)) {
+          console.error("API response is not an array:", data);
+          setArticles([]);
+          return;
+        }
+
+        // Simplemente ordena todos los artículos por fecha, sin filtrar por 'area'
+        const allArticlesSorted = data.sort((a, b) => {
+          const dateA = new Date(a.fecha_actual);
+          const dateB = new Date(b.fecha_actual);
+          // Manejo de fechas inválidas para evitar errores de ordenamiento
+          if (isNaN(dateA.getTime())) {
+            console.warn(`Fecha inválida para el artículo: ${a.title} - ${a.fecha_actual}`);
+            return 0;
+          }
+          if (isNaN(dateB.getTime())) {
+            console.warn(`Fecha inválida para el artículo: ${b.title} - ${b.fecha_actual}`);
+            return 0;
+          }
+          return dateB - dateA; // Ordena del más reciente al más antiguo
+        });
+
+        console.log("All articles (sorted by date):", allArticlesSorted); // Verás todos los artículos aquí
+        setArticles(allArticlesSorted);
       })
       .catch((error) => console.error("Error al obtener los artículos:", error));
   }, []);
@@ -28,6 +57,10 @@ function Portada() {
       console.error("ID del artículo no válido");
     }
   };
+
+  useEffect(() => {
+    console.log("Articles state updated:", articles);
+  }, [articles]);
 
   return (
     <Box>
@@ -46,12 +79,13 @@ function Portada() {
                 linkArticle={`/article/${articles[0].article_id}`}
               />
             )}
+            {articles.length === 0 && <p>No hay artículos disponibles.</p>}
           </Box>
         </Grid>
 
         {/* Otros artículos */}
         <Grid item xs={12} sm={4}>
-          <Box sx={{ backgroundColor: "#ffffff", height: "100%", paddingLeft: "20px", display: "flex", flexDirection: "column" }}>
+          <Box sx={{ backgroundColor: "#ffffff", height: "100%", paddingLeft: "20px", display: "flex", flexDirection: "column", textAlign: "right" }}>
             {articles.slice(1, 3).map((article, index) => (
               <Box key={article.article_id} sx={{ marginBottom: index === 0 ? "16px" : "0" }}>
                 <PostCardTwo
@@ -63,6 +97,7 @@ function Portada() {
                 />
               </Box>
             ))}
+            {articles.slice(1, 3).length === 0 && <p>No hay otros artículos disponibles.</p>}
           </Box>
         </Grid>
       </Grid>

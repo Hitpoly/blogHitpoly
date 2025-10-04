@@ -53,6 +53,7 @@ function PostCardTwo({ image, title, linkArticle, linkText }) {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "30px 0px",
+          textAlign: "left", 
         }}
       >
         {/* Título del post */}
@@ -77,10 +78,10 @@ function PostCardTwo({ image, title, linkArticle, linkText }) {
           </Typography>
         </Link>
 
-        {/* Botón "Leer más" también debe redirigir al artículo */}
+        {/* Botón "Leer más" debe redirigir al artículo y alinearse a la izquierda */}
         <Button
-          component={Link} // Usamos Link en el botón
-          to={linkArticle || "/error"} // Enlace seguro al artículo
+          component={Link}
+          to={linkArticle || "/error"}
           variant="text"
           sx={{
             color: "#F21C63",
@@ -88,6 +89,7 @@ function PostCardTwo({ image, title, linkArticle, linkText }) {
             fontSize: "0.9rem",
             textTransform: "none",
             "&:hover": { color: "#4285F4" },
+            alignSelf: "flex-start",
           }}
         >
           {linkText || "Leer más"}

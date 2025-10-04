@@ -4,7 +4,7 @@ import Footer from "../components/footer/page";
 import MarketingCards from "./components/marketingSection/MarketingCards";
 import Newsletter from "./components/newsletter/captadorCorreo";
 import OportunidadesImportantes from "./components/oportunidadesImportantes/oportunidadesDestacadas";
-import Portada from "./components/portada/portada";
+import Portada from "./components/portada/portadaUno";
 import RecursosMasUsados from "./components/recursosMasUsados/recursosMasUsados";
 import TecnologiaCards from "./components/tecnologiaSection/tecnologiaCards";
 import VentasCards from "./components/ventasSection/VentasCards";

@@ -42,9 +42,6 @@ const slugify = (text) => {
     .replace(/\-\-+/g, "-");
 };
 
-// Se eliminaron NextArrow y PrevArrow
-// Se eliminó la configuración de slick-carousel
-
 // Componente para la Tabla de Contenidos (Index) (SIN CAMBIOS)
 const AppArticleIndex = ({ subtitles }) => {
   return (
@@ -56,7 +53,7 @@ const AppArticleIndex = ({ subtitles }) => {
         boxShadow: 1,
         width: { xs: "90%", md: "50%" },
         margin: "0 auto",
-        mb: 4, 
+        mb: 4,
       }}
     >
       <Typography
@@ -72,7 +69,7 @@ const AppArticleIndex = ({ subtitles }) => {
             style={{ marginBottom: "10px", textAlign: "center" }}
           >
             <Link
-              href={`#subtitulo-${index}`} 
+              href={`#subtitulo-${index}`}
               style={{
                 textDecoration: "none",
                 color: "#333",
@@ -103,8 +100,6 @@ const ArticleDetail = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-  // El estado de arrastre ya no es necesario aquí, ya que el carrusel lo maneja internamente.
-  // Sin embargo, si quieres mantener la lógica de click-prevención, el carrusel la tiene.
 
   let articleId = null;
   if (slug_y_id) {
@@ -138,8 +133,6 @@ const ArticleDetail = () => {
         setLoading(false);
       });
   }, [articleId, slug_y_id]);
-
-  // Se eliminó la función handleCardClick de aquí, ya que se encuentra dentro de ArticleRelatedCarousel.
 
   // Estados de carga y error (SIN CAMBIOS)
   if (loading)
@@ -213,8 +206,6 @@ const ArticleDetail = () => {
     });
   };
 
-  // Se eliminó la configuración de react-slick (settings)
-
   return (
     <>
       <Box
@@ -225,12 +216,15 @@ const ArticleDetail = () => {
           bgcolor: "#fff",
         }}
       >
-        <Container sx={{ flexGrow: 1, marginTop: 5, maxWidth: "900px" }}>
-          {/* Breadcrumbs (SIN CAMBIOS) */}
+                <Container sx={{ flexGrow: 1, maxWidth: "900px", marginTop: {xs: 12, md: 15}, }}>  
+          {/* --- BREADCRUMBS (MIGAS DE PAN) AJUSTADO --- */}
           <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 4 }}>
+            {/* 1. Inicio */}
             <Link underline="hover" color="inherit" component={Link} to="/">
               Inicio
             </Link>
+
+            {/* 2. Categoría (Área) - Solo si existe */}
             {article.area && (
               <Link
                 underline="hover"
@@ -241,14 +235,20 @@ const ArticleDetail = () => {
                 {article.area.charAt(0).toUpperCase() + article.area.slice(1)}{" "}
               </Link>
             )}
-            <Typography color="text.primary">{article.title}</Typography>
+
+            {/* 3. Título del artículo (Página actual, sin enlace) */}
+            <Typography color="text.primary">
+              {article.title}
+            </Typography>
           </Breadcrumbs>
+          {/* --- FIN BREADCRUMBS AJUSTADO --- */}
+
 
           <Grid container spacing={4} alignItems="center">
             {/* Título, Fecha y Autor (SIN CAMBIOS) */}
             <Grid md={6} item xs={12}>
               <Typography
-                variant="h3"
+                variant="h1"
                 sx={{
                   fontWeight: "bold",
                   color: "#333",
@@ -352,7 +352,7 @@ const ArticleDetail = () => {
           </Grid>
         </Grid>
 
-        {/* USO DEL NUEVO CARRUSEL IMPORTADO */}
+        {/* USO DEL NUEVO CARRUSEL IMPORTADO (SIN CAMBIOS) */}
         {articles.length > 0 && articleId && (
             <ArticleRelatedCarousel 
                 articles={articles} 

@@ -26,7 +26,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboardBlog/*" element={<DashboardBlog />} />
         <Route path="/article/:slug_y_id" element={<ArticleDetail />} /> 
-        <Route path="/articulo" element={<Article />} /> 
+        <Route path="/articulo" element={<Article />} />  
       </Routes>
     </Box>
   );
